@@ -1,0 +1,254 @@
+.whole-designs-page{
+    display: flex;
+    gap:5rem;
+}
+.whole-filter{
+    width:15%;
+    margin-left: 3rem;
+}
+.filter{
+    width: 100%;
+    margin-top: 1rem;
+    border-right: 1px solid #ccc;
+}
+
+.filter-field{
+    border-top:  1px solid #ccc;
+    display: flex;
+    gap:3rem;
+    padding: 0.75rem 1rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filter-field .title{
+    font-weight: bold;
+}
+.filter-field .symbol{
+    font-weight: bold;
+    font-size: 1.5rem;
+    color:#56585c;
+}
+.filter-field .symbol:hover{
+    cursor: pointer;
+}
+.checkbox-grp{
+    display: flex;
+    align-items: center;
+    gap:0.75rem;
+}
+.checkbox-grp input:hover, .checkbox-grp label:hover{
+    cursor: pointer;
+}
+
+
+
+
+.designs{
+    text-align: center;
+    width:80%;
+    padding: 0 1rem;
+}
+.designs h1{
+    color: rgb(226, 110, 16);
+}
+
+.cards-container{
+    display: flex;
+    gap:1.5rem;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.card{
+    min-width:30%;
+    text-align: center;
+    border-radius: 0.35rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    flex: 1;
+    max-width: 32%;
+}
+
+.card:hover{
+    cursor: pointer;
+}
+
+.card img{
+    height: 15rem;
+    width:100%;
+    object-fit: cover;
+    border-top-right-radius: 0.35rem;
+    border-top-left-radius: 0.35rem;
+}
+
+.card .title{
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgb(163, 4, 137);
+}
+.price span{
+    font-weight: bold;
+    color: rgb(4, 190, 4);
+}
+.price del{
+    font-size: 0.75rem;
+}
+
+.actions{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+
+}
+.actions button{
+    background-color: rgb(243, 113, 237);
+    color: white;
+    padding: 0.5rem 2rem;
+    border-radius: 0.35rem;
+    border:none;
+}
+.actions button:hover{
+    background-color: rgb(223, 9, 187);
+    cursor: pointer;
+}
+
+
+
+.details-container{
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+}
+.details-container h1{
+    color: rgb(226, 101, 43);
+    text-align: center;
+}
+
+.card-details{
+    display: flex;
+    width:80%;
+    background-color: rgb(234, 243, 250);
+    height: 60vh;
+    align-items: stretch;
+}
+
+.carousel{
+    width:50%;
+    height: 60vh;
+    /* height: 100%; */
+}
+
+.carousel-img{
+    object-fit: cover;
+    width:100%;
+    height: 60vh;
+    /* height: 100%; */
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex:2;
+    padding: 0 0.5rem;
+}
+
+.back{
+    padding: 0.5rem 2.5rem;
+    border-radius: 0.35rem;
+    background-color: transparent;
+    border: 1px solid rgb(221, 36, 159);
+    color: rgb(221, 36, 159);
+    font-size: 1rem;
+}
+.back:hover{
+    cursor: pointer;
+    background-color: rgb(221, 36, 159);
+    color: white;
+}
+
+@media screen and (max-width:767px) {
+    .whole-designs-page{
+        gap:0.5rem;
+    }
+    .whole-filter{
+        width:40%;
+        margin-left: 0.5rem;
+    }
+    .filter{
+        width:100%;
+    }
+    .filter-field{
+        gap:0.5rem;
+        width:100%;
+    }
+    .filter-field .title{
+        width: 50%;
+    }
+    .filter-field .symbol{
+        width: 50%;
+        text-align: right;
+    }
+
+    .designs{
+        padding: 0;
+    }
+    .cards-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .card{
+        min-width: 90%;
+    }
+    .card img{
+        height: 8rem;
+    }
+    .card-details{
+        flex-direction: column;
+        height: auto;
+        gap:1rem;
+    }
+    .carousel{
+        width:100%;
+        height: 32vh;
+    }
+    .carousel-img{
+        height: 32vh;
+    }
+    .content{
+        display: block;
+        text-align: center;
+    }
+}
+@media screen and (min-height:1000px){
+    .card-details{
+        height: 30vh;
+    }
+    .carousel{
+        height: 30vh;
+    }
+    .carousel-img{
+        height: 30vh;
+    }
+}
+
+@media screen and (max-width:767px) and (min-height:1000px) {
+    .designs{
+        padding: 0;
+    }
+    .card-details{
+        height: auto;
+    }
+    .carousel{
+        width:100%;
+    }
+}

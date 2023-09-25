@@ -1,0 +1,27 @@
+.home{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 3rem;
+}
+.home h1{
+    color: rgb(37, 122, 233);
+    margin-bottom: 0;
+    font-size: 3rem;
+}
+.home p{
+    margin: 0;
+    font-size: 1.5rem;
+    color: rgb(238, 35, 238);
+}
+
+@media screen and (max-width:767px){
+    .home h1{
+        font-size: 1.35rem;
+    }
+    .home p{
+        font-size: 1rem;
+    }
+}
