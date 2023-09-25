@@ -9,6 +9,7 @@ import ReactImageMagnify from "react-image-magnify";
 import MinusIcon from "../../../icons/minus-icon";
 import PlusIcon from "../../../icons/plus-icon";
 import useFilter from "../../../hooks/use-filter";
+import { motion, AnimatePresence } from "framer-motion";
 
 const DUMMY_LIST = [
   {
@@ -16,7 +17,8 @@ const DUMMY_LIST = [
     title: "Design 1",
     description: "This is the first Design.",
     price: 300,
-    mainGrp:"Diamond",
+    mainGrp: "Diamond",
+    category: "Diamond Jewelery",
     brand: "Brand 1",
     oldPrice: 350,
     image: "https://picsum.photos/536/354",
@@ -30,7 +32,8 @@ const DUMMY_LIST = [
     description: "This is the second Design.",
     price: 350,
     brand: "Brand 2",
-    mainGrp:"Gold",
+    mainGrp: "Gold",
+    category: "Gold Jewelery",
     oldPrice: 400,
     image: "https://picsum.photos/536/355",
     image1: "https://picsum.photos/536/304",
@@ -42,7 +45,8 @@ const DUMMY_LIST = [
     title: "Design 3",
     description: "This is the third Design.",
     price: 390,
-    mainGrp:"Diamond",
+    mainGrp: "Diamond",
+    category: "Diamond Jewelery",
     brand: "Brand 3",
     oldPrice: 450,
     image: "https://picsum.photos/536/353",
@@ -55,7 +59,8 @@ const DUMMY_LIST = [
     title: "Design 4",
     description: "This is the fourth Design.",
     price: 400,
-    mainGrp:"Gold",
+    mainGrp: "Gold",
+    category: "Gold Jewelery",
     brand: "Brand 4",
     oldPrice: 480,
     image: "https://picsum.photos/536/352",
@@ -68,7 +73,8 @@ const DUMMY_LIST = [
     title: "Design 5",
     description: "This is the fifth Design.",
     price: 450,
-    mainGrp:"Diamond",
+    mainGrp: "Diamond",
+    category: "Diamond Jewelery",
     brand: "Brand 5",
     oldPrice: 500,
     image: "https://picsum.photos/536/351",
@@ -81,7 +87,8 @@ const DUMMY_LIST = [
     title: "Design 6",
     description: "This is the sixth Design.",
     price: 500,
-    mainGrp:"Gold",
+    mainGrp: "Gold",
+    category: "Gold Jewelery",
     brand: "Brand 6",
     oldPrice: 550,
     image: "https://picsum.photos/536/356",
@@ -94,7 +101,8 @@ const DUMMY_LIST = [
     title: "Design 7",
     description: "This is the seventh Design.",
     price: 550,
-    mainGrp:"Diamond",
+    mainGrp: "Diamond",
+    category: "Diamond Jewelery",
     brand: "Brand 7",
     oldPrice: 600,
     image: "https://picsum.photos/536/357",
@@ -107,7 +115,8 @@ const DUMMY_LIST = [
     title: "Design 8",
     description: "This is the eighth Design.",
     price: 600,
-    mainGrp:"Gold",
+    mainGrp: "Gold",
+    category: "Gold Jewelery",
     brand: "Brand 8",
     oldPrice: 650,
     image: "https://picsum.photos/536/358",
@@ -120,7 +129,8 @@ const DUMMY_LIST = [
     title: "Design 9",
     description: "This is the ninth Design.",
     price: 650,
-    mainGrp:"Diamond",
+    mainGrp: "Diamond",
+    category: "Diamond Jewelery",
     brand: "Brand 9",
     oldPrice: 700,
     image: "https://picsum.photos/536/359",
@@ -133,7 +143,8 @@ const DUMMY_LIST = [
     title: "Design 10",
     description: "This is the tenth Design.",
     price: 700,
-    mainGrp:"Gold",
+    mainGrp: "Gold",
+    category: "Gold Jewelery",
     brand: "Brand 10",
     oldPrice: 750,
     image: "https://picsum.photos/536/360",
@@ -146,7 +157,8 @@ const DUMMY_LIST = [
     title: "Design 11",
     description: "This is the 11th Design.",
     price: 750,
-    mainGrp:"Diamond",
+    mainGrp: "Diamond",
+    category: "Diamond Jewelery",
     brand: "Brand 11",
     oldPrice: 800,
     image: "https://picsum.photos/536/361",
@@ -179,7 +191,7 @@ export default function ViewDesign() {
   const [mainGrpFilters, setMainGrpFilters] = useState({
     gold: false,
     diamond: false,
-  })
+  });
 
   function handleShowDetails(item) {
     setCardItem(item);
@@ -229,57 +241,63 @@ export default function ViewDesign() {
     handleToggle: handleExpandSizeFilter,
   } = useFilter();
 
-  
-  function handlePriceChange(event){
-    const {name, checked} = event.target;
+  function handlePriceChange(event) {
+    const { name, checked } = event.target;
 
-    setPriceFilters((prev)=>{
+    setPriceFilters((prev) => {
       return {
         ...prev,
-      [name]: checked,
-      }
-    })
+        [name]: checked,
+      };
+    });
   }
 
-  function handleMainGrpChange(event){
-    const {name, checked} = event.target;
+  function handleMainGrpChange(event) {
+    const { name, checked } = event.target;
 
-    setMainGrpFilters((prev)=>{
+    setMainGrpFilters((prev) => {
       return {
         ...prev,
-      [name]: checked,
-      }
-    })
+        [name]: checked,
+      };
+    });
   }
 
-  let filteredList= DUMMY_LIST.filter((item)=>{
-    if(mainGrpFilters.diamond && item.mainGrp==="Diamond"){
+  let filteredList = DUMMY_LIST.filter((item) => {
+    if (mainGrpFilters.diamond && item.mainGrp === "Diamond") {
       return true;
     }
-    if(mainGrpFilters.gold && item.mainGrp==="Gold"){
+    if (mainGrpFilters.gold && item.mainGrp === "Gold") {
       return true;
     }
 
-    if(item.price<350 && priceFilters.below350){
+    if (item.price < 350 && priceFilters.below350) {
       return true;
     }
-    if(priceFilters.between350and500 && item.price>=350 && item.price<=500){
+    if (
+      priceFilters.between350and500 &&
+      item.price >= 350 &&
+      item.price <= 500
+    ) {
       return true;
     }
-    if(priceFilters.between500and1000 && item.price>500 && item.price<=1000){
+    if (
+      priceFilters.between500and1000 &&
+      item.price > 500 &&
+      item.price <= 1000
+    ) {
       return true;
     }
 
     return false;
   });
 
-  if(filteredList.length===0){
-    filteredList= DUMMY_LIST;
+  if (filteredList.length === 0) {
+    filteredList = DUMMY_LIST;
   }
 
-
   let content = (
-    <div className={classes["whole-designs-page"]}>
+    <div key="whole-designs" className={classes["whole-designs-page"]}>
       <div className={classes["whole-filter"]}>
         <h2>Shop By</h2>
         <div className={classes.filter}>
@@ -339,11 +357,23 @@ export default function ViewDesign() {
           {isMainGrpFilterExpanded && (
             <div>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="diamond" name="diamond" checked={mainGrpFilters.diamond} onChange={handleMainGrpChange} />
+                <input
+                  type="checkbox"
+                  id="diamond"
+                  name="diamond"
+                  checked={mainGrpFilters.diamond}
+                  onChange={handleMainGrpChange}
+                />
                 <label htmlFor="diamond">Diamond</label>
               </p>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="gold" name="gold" checked={mainGrpFilters.gold} onChange={handleMainGrpChange} />
+                <input
+                  type="checkbox"
+                  id="gold"
+                  name="gold"
+                  checked={mainGrpFilters.gold}
+                  onChange={handleMainGrpChange}
+                />
                 <label htmlFor="gold">Gold</label>
               </p>
             </div>
@@ -483,37 +513,58 @@ export default function ViewDesign() {
         </div>
       </div>
 
-      <div className={classes.designs}>
+      <motion.div className={classes.designs}>
         <h1>View All Designs</h1>
-        <ul className={classes["cards-container"]}>
-          {filteredList.map((item) => {
-            return (
-              <li
-                onClick={()=>handleShowDetails(item)}
-                key={item.id}
-                className={classes.card}
-              >
-                <img src={item.image} alt={item.title} />
-                <p className={classes.title}>{item.title}</p>
-                <p>{item.description}</p>
-                <p className={classes.price}>
-                  <span>₹{item.price} </span>
-                  <del>₹{item.oldPrice}</del>
-                </p>
-                <div className={classes.actions}>
-                  <button>VIEW</button>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+        <motion.ul
+          variants={{
+            hidden: { y: -20, opacity: 0 },
+            visible: {
+              transition: { staggerChildren: 0.05 },
+              y: 0,
+              opacity: 1,
+            },
+          }}
+          initial="hidden"
+          animate="visible"
+          className={classes["cards-container"]}
+        >
+          <AnimatePresence>
+            {filteredList.map((item) => {
+              return (
+                <motion.li
+                  layout
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.5 },
+                    visible: { opacity: 1, scale: 1 },
+                  }}
+                  // initial="hidden"
+                  // animate="visible"
+                  exit={{ opacity: 1, scale: 1 }}
+                  onClick={() => handleShowDetails(item)}
+                  key={item.id}
+                  className={classes.card}
+                >
+                  <img src={item.image} alt={item.title} />
+                  <p className={classes.title}>{item.title}</p>
+                  <p>{item.description}</p>
+                </motion.li>
+              );
+            })}
+          </AnimatePresence>
+        </motion.ul>
+      </motion.div>
     </div>
   );
 
   if (isShow) {
     content = (
-      <div className={classes["details-container"]}>
+      <motion.div
+        key="details"
+        initial={{ y: -30, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: -30, opacity: 0 }}
+        className={classes["details-container"]}
+      >
         <h1>{cardItem.title} Details</h1>
         <div className={classes["card-details"]}>
           <div className={classes.carousel}>
@@ -524,7 +575,7 @@ export default function ViewDesign() {
                   isFluidWidth: true,
                   src: cardItem.image,
                   width: 500,
-                  height:500
+                  height: 500,
                 },
                 largeImage: {
                   src: cardItem.image,
@@ -562,18 +613,37 @@ export default function ViewDesign() {
               <del>₹{cardItem.oldPrice}</del>
             </p>
             <div className={classes.actions}>
-              <button>ADD TO CART</button>
-              <button>BUY</button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 500, mass: 1 }}
+              >
+                ADD TO CART
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 500, mass: 1 }}
+              >
+                BUY
+              </motion.button>
             </div>
           </section>
         </div>
         {/* <CarouselComponent /> */}
-        <button className={classes.back} onClick={handleGoBack}>
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          transition={{ type: "spring", stiffness: 500, mass: 1 }}
+          className={classes.back}
+          onClick={handleGoBack}
+        >
           Back
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
     );
   }
 
-  return <>{content}</>;
+  return (
+    <>
+      <AnimatePresence mode="wait">{content}</AnimatePresence>
+    </>
+  );
 }

@@ -8,9 +8,11 @@ const onSearch = (value) => {
 };
 
 // Filter `option.label` match the user type `input`
-const filterOption = (input, option) =>
-  (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
-const SelectComponent = ({options, placeholder, name}) => (
+const filterOption = (input, option,) =>
+(option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+
+const SelectComponent = ({options, placeholder, name, onMainGroupChange}) => (
+  
   <Select
     style={{
         border:"1px solid rgb(112, 112, 129)",
