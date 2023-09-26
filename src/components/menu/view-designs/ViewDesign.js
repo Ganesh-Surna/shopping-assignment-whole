@@ -10,6 +10,7 @@ import MinusIcon from "../../../icons/minus-icon";
 import PlusIcon from "../../../icons/plus-icon";
 import useFilter from "../../../hooks/use-filter";
 import { motion, AnimatePresence } from "framer-motion";
+import useCheck from "../../../hooks/use-check";
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -19,7 +20,7 @@ const DUMMY_LIST = [
     title: "Design 1",
     description: "This is the first Design.",
     price: 300,
-    main_grourp: "Diamond",
+    main_group: "Diamond",
     category: "Diamond Jewelery",
     design_number: 1,
     created_date: today,
@@ -47,7 +48,7 @@ const DUMMY_LIST = [
     price: 350,
     main_group: "Gold",
     category: "Gold Jewelery",
-    design_number: 1,
+    design_number: 2,
     created_date: today,
     style: "Style 3",
     product: "Product 3",
@@ -99,7 +100,7 @@ const DUMMY_LIST = [
     price: 400,
     main_group: "Gold",
     category: "Gold Jewelery",
-    design_number: 1,
+    design_number: 2,
     created_date: today,
     style: "Style 1",
     product: "Product 1",
@@ -151,7 +152,7 @@ const DUMMY_LIST = [
     price: 500,
     main_group: "Gold",
     category: "Gold Jewelery",
-    design_number: 1,
+    design_number: 2,
     created_date: today,
     style: "Style 3",
     product: "Product 3",
@@ -177,7 +178,7 @@ const DUMMY_LIST = [
     price: 550,
     main_group: "Diamond",
     category: "Diamond Jewelery",
-    design_number: 1,
+    design_number: 2,
     created_date: today,
     style: "Style 2",
     product: "Product 2",
@@ -229,7 +230,7 @@ const DUMMY_LIST = [
     price: 650,
     main_group: "Diamond",
     category: "Diamond Jewelery",
-    design_number: 1,
+    design_number: 2,
     created_date: today,
     style: "Style 1",
     product: "Product 1",
@@ -281,7 +282,7 @@ const DUMMY_LIST = [
     price: 750,
     main_group: "Diamond",
     category: "Diamond Jewelery",
-    design_number: 1,
+    design_number: 2,
     created_date: today,
     style: "Style 1",
     product: "Product 1",
@@ -333,16 +334,77 @@ export default function ViewDesign() {
   const [isShow, setIsShow] = useState(false);
   const [cardItem, setCardItem] = useState(null);
 
-  const [priceFilters, setPriceFilters] = useState({
-    below350: false,
-    between350and500: false,
-    between500and1000: false,
-  });
+  // const [priceFilters, setPriceFilters] = useState({
+  //   below350: false,
+  //   between350and500: false,
+  //   between500and1000: false,
+  // });
 
-  const [mainGrpFilters, setMainGrpFilters] = useState({
+  // const [mainGrpFilters, setMainGrpFilters] = useState({
+  //   gold: false,
+  //   diamond: false,
+  // });
+
+  const {
+    field: mainGrpFilters,
+    handleFieldCheckChange: handleMainGroupCheckChange,
+  } = useCheck({
     gold: false,
     diamond: false,
   });
+
+  const {
+    field: categoryFilters,
+    handleFieldCheckChange: handleCategoryCheckChange,
+  } = useCheck({
+    goldJewelery: false,
+    diamondJewelery: false,
+  });
+
+  const {
+    field: designNumFilters,
+    handleFieldCheckChange: handleDesignNumCheckChange,
+  } = useCheck({
+    one: false,
+    two: false,
+  });
+
+  const {
+    field: styleFilters,
+    handleFieldCheckChange: handleStyleCheckChange,
+  } = useCheck({
+    one: false,
+    two: false,
+    three: false,
+  });
+
+  const {
+    field: productFilters,
+    handleFieldCheckChange: handleProductCheckChange,
+  } = useCheck({
+    one: false,
+    two: false,
+    three: false,
+  });
+
+  const {
+    field: modelFilters,
+    handleFieldCheckChange: handleModelCheckChange,
+  } = useCheck({
+    one: false,
+    two: false,
+    three: false,
+  });
+
+  const {
+    field: sizeFilters,
+    handleFieldCheckChange: handleSizeCheckChange,
+  } = useCheck({
+    one: false,
+    two: false,
+    three: false,
+  });
+
 
   function handleShowDetails(item) {
     setCardItem(item);
@@ -392,27 +454,27 @@ export default function ViewDesign() {
     handleToggle: handleExpandSizeFilter,
   } = useFilter();
 
-  function handlePriceChange(event) {
-    const { name, checked } = event.target;
+  // function handlePriceCheckChange(event) {
+  //   const { name, checked } = event.target;
 
-    setPriceFilters((prev) => {
-      return {
-        ...prev,
-        [name]: checked,
-      };
-    });
-  }
+  //   setPriceFilters((prev) => {
+  //     return {
+  //       ...prev,
+  //       [name]: checked,
+  //     };
+  //   });
+  // }
 
-  function handleMainGrpChange(event) {
-    const { name, checked } = event.target;
+  // function handleMainCheckGrpChange(event) {
+  //   const { name, checked } = event.target;
 
-    setMainGrpFilters((prev) => {
-      return {
-        ...prev,
-        [name]: checked,
-      };
-    });
-  }
+  //   setMainGrpFilters((prev) => {
+  //     return {
+  //       ...prev,
+  //       [name]: checked,
+  //     };
+  //   });
+  // }
 
   let filteredList = DUMMY_LIST.filter((item) => {
     if (mainGrpFilters.diamond && item.main_group === "Diamond") {
@@ -422,23 +484,80 @@ export default function ViewDesign() {
       return true;
     }
 
-    if (item.price < 350 && priceFilters.below350) {
+    if (categoryFilters.goldJewelery && item.category === "Gold Jewelery") {
       return true;
     }
     if (
-      priceFilters.between350and500 &&
-      item.price >= 350 &&
-      item.price <= 500
+      categoryFilters.diamondJewelery &&
+      item.category === "Diamond Jewelery"
     ) {
       return true;
     }
-    if (
-      priceFilters.between500and1000 &&
-      item.price > 500 &&
-      item.price <= 1000
-    ) {
+
+    if (designNumFilters.one && item.design_number === 1) {
       return true;
     }
+    if (designNumFilters.two && item.design_number === 2) {
+      return true;
+    }
+
+    if (styleFilters.one && item.style === "Style 1") {
+      return true;
+    }
+    if (styleFilters.two && item.style === "Style 2") {
+      return true;
+    }
+    if (styleFilters.three && item.style === "Style 3") {
+      return true;
+    }
+
+    if(productFilters.one && item.product === "Product 1"){
+      return true;
+    }
+    if(productFilters.two && item.product === "Product 2"){
+      return true;
+    }
+    if(productFilters.three && item.product === "Product 3"){
+      return true;
+    }
+
+    if(modelFilters.one && item.model === "Model 1"){
+      return true;
+    }
+    if(modelFilters.two && item.model === "Model 2"){
+      return true;
+    }
+    if(modelFilters.three && item.model === "Model 3"){
+      return true;
+    }
+
+    if(sizeFilters.one && item.size === "Size 1"){
+      return true;
+    }
+    if(sizeFilters.two && item.size === "Size 2"){
+      return true;
+    }
+    if(sizeFilters.three && item.size === "Size 3"){
+      return true;
+    }
+
+    // if (item.price < 350 && priceFilters.below350) {
+    //   return true;
+    // }
+    // if (
+    //   priceFilters.between350and500 &&
+    //   item.price >= 350 &&
+    //   item.price <= 500
+    // ) {
+    //   return true;
+    // }
+    // if (
+    //   priceFilters.between500and1000 &&
+    //   item.price > 500 &&
+    //   item.price <= 1000
+    // ) {
+    //   return true;
+    // }
 
     return false;
   });
@@ -479,7 +598,7 @@ export default function ViewDesign() {
                   id="between350and500"
                   name="between350and500"
                   checked={priceFilters.between350and500}
-                  onChange={handlePriceChange}
+                  onChange={handlePriceCheckChange}
                 />
                 <label htmlFor="between350and500">₹350 - ₹500</label>
               </p>
@@ -513,7 +632,7 @@ export default function ViewDesign() {
                   id="diamond"
                   name="diamond"
                   checked={mainGrpFilters.diamond}
-                  onChange={handleMainGrpChange}
+                  onChange={handleMainGroupCheckChange}
                 />
                 <label htmlFor="diamond">Diamond</label>
               </p>
@@ -523,7 +642,7 @@ export default function ViewDesign() {
                   id="gold"
                   name="gold"
                   checked={mainGrpFilters.gold}
-                  onChange={handleMainGrpChange}
+                  onChange={handleMainGroupCheckChange}
                 />
                 <label htmlFor="gold">Gold</label>
               </p>
@@ -542,12 +661,24 @@ export default function ViewDesign() {
           {isCategoryFilterExpanded && (
             <div>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Diamond Jewelery" />
+                <input
+                  type="checkbox"
+                  id="Diamond Jewelery"
+                  name="diamondJewelery"
+                  checked={categoryFilters.diamondJewelery}
+                  onChange={handleCategoryCheckChange}
+                />
                 <label htmlFor="Diamond Jewelery">Diamond Jewelery</label>
               </p>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="GOLD Jewelery" />
-                <label htmlFor="GOLD Jewelery">GOLD Jewelery</label>
+                <input
+                  type="checkbox"
+                  id="Gold Jewelery"
+                  name="goldJewelery"
+                  checked={categoryFilters.goldJewelery}
+                  onChange={handleCategoryCheckChange}
+                />
+                <label htmlFor="Gold Jewelery">GOLD Jewelery</label>
               </p>
             </div>
           )}
@@ -564,11 +695,23 @@ export default function ViewDesign() {
           {isDesignFilterExpanded && (
             <div>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="1" />
+                <input
+                  type="checkbox"
+                  id="1"
+                  name="one"
+                  checked={designNumFilters.one}
+                  onChange={handleDesignNumCheckChange}
+                />
                 <label htmlFor="1">1</label>
               </p>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="2" />
+                <input
+                  type="checkbox"
+                  id="2"
+                  name="two"
+                  checked={designNumFilters.two}
+                  onChange={handleDesignNumCheckChange}
+                />
                 <label htmlFor="2">2</label>
               </p>
             </div>
@@ -586,12 +729,34 @@ export default function ViewDesign() {
           {isStyleFilterExpanded && (
             <div>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Style 1" />
+                <input
+                  type="checkbox"
+                  id="Style 1"
+                  name="one"
+                  checked={styleFilters.one}
+                  onChange={handleStyleCheckChange}
+                />
                 <label htmlFor="Style 1">Style 1</label>
               </p>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Style 2" />
+                <input
+                  type="checkbox"
+                  id="Style 2"
+                  name="two"
+                  checked={styleFilters.two}
+                  onChange={handleStyleCheckChange}
+                />
                 <label htmlFor="Style 2">Style 2</label>
+              </p>
+              <p className={classes["checkbox-grp"]}>
+                <input
+                  type="checkbox"
+                  id="Style 3"
+                  name="three"
+                  checked={styleFilters.three}
+                  onChange={handleStyleCheckChange}
+                />
+                <label htmlFor="Style 3">Style 3</label>
               </p>
             </div>
           )}
@@ -608,12 +773,16 @@ export default function ViewDesign() {
           {isProductFilterExpanded && (
             <div>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Product 1" />
+                <input type="checkbox" id="Product 1" name="one" checked={productFilters.one} onChange={handleProductCheckChange} />
                 <label htmlFor="Product 1">Product 1</label>
               </p>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Product 2" />
+                <input type="checkbox" id="Product 2" name="two" checked={productFilters.two} onChange={handleProductCheckChange} />
                 <label htmlFor="Product 2">Product 2</label>
+              </p>
+              <p className={classes["checkbox-grp"]}>
+                <input type="checkbox" id="Product 3" name="three" checked={productFilters.three} onChange={handleProductCheckChange} />
+                <label htmlFor="Product 3">Product 3</label>
               </p>
             </div>
           )}
@@ -630,12 +799,16 @@ export default function ViewDesign() {
           {isModelFilterExpanded && (
             <div>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Model 1" />
+                <input type="checkbox" id="Model 1" name="one" checked={modelFilters.one} onChange={handleModelCheckChange} />
                 <label htmlFor="Model 1">Model 1</label>
               </p>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Model 2" />
+                <input type="checkbox" id="Model 2" name="two" checked={modelFilters.two} onChange={handleModelCheckChange} />
                 <label htmlFor="Model 2">Model 2</label>
+              </p>
+              <p className={classes["checkbox-grp"]}>
+                <input type="checkbox" id="Model 3" name="three" checked={modelFilters.three} onChange={handleModelCheckChange} />
+                <label htmlFor="Model 3">Model 3</label>
               </p>
             </div>
           )}
@@ -652,12 +825,16 @@ export default function ViewDesign() {
           {isSizeFilterExpanded && (
             <div>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Size 1" />
+                <input type="checkbox" id="Size 1" name="one" checked={sizeFilters.one} onChange={handleSizeCheckChange} />
                 <label htmlFor="Size 1">Size 1</label>
               </p>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Size 2" />
+                <input type="checkbox" id="Size 2" name="two" checked={sizeFilters.two} onChange={handleSizeCheckChange} />
                 <label htmlFor="Size 2">Size 2</label>
+              </p>
+              <p className={classes["checkbox-grp"]}>
+                <input type="checkbox" id="Size 3" name="three" checked={sizeFilters.three} onChange={handleSizeCheckChange} />
+                <label htmlFor="Size 3">Size 3</label>
               </p>
             </div>
           )}
@@ -772,54 +949,54 @@ export default function ViewDesign() {
                 <p>{cardItem.category}</p>
               </div>
               <div>
-              <span>Created Date: </span>
-              <p>{cardItem.created_date}</p>
+                <span>Created Date: </span>
+                <p>{cardItem.created_date}</p>
               </div>
               <div>
-              <span>Style: </span>
-              <p>{cardItem.style}</p>
+                <span>Style: </span>
+                <p>{cardItem.style}</p>
               </div>
               <div>
-              <span>Product: </span>
-              <p>{cardItem.product}</p>
+                <span>Product: </span>
+                <p>{cardItem.product}</p>
               </div>
               <div>
-              <span>Model: </span>
-              <p>{cardItem.model}</p>
+                <span>Model: </span>
+                <p>{cardItem.model}</p>
               </div>
               <div>
                 <span>Size: </span>
                 <p>{cardItem.size}</p>
               </div>
               <div>
-              <span>Worker: </span>
-              <p>{cardItem.worker}</p>
+                <span>Worker: </span>
+                <p>{cardItem.worker}</p>
               </div>
               <div>
-              <span>Pieces: </span>
-              <p>{cardItem.pieces}</p>
+                <span>Pieces: </span>
+                <p>{cardItem.pieces}</p>
               </div>
               <div>
-              <span>Gross Weight: </span>
-              <p>{cardItem.gross_weight}</p>
+                <span>Gross Weight: </span>
+                <p>{cardItem.gross_weight}</p>
               </div>
               <div>
-              <span>Stone Weight: </span>
-              <p>{cardItem.stone_weight}</p>
+                <span>Stone Weight: </span>
+                <p>{cardItem.stone_weight}</p>
               </div>
               <div>
-              <span>Net Weight: </span>
-              <p>{cardItem.net_weight}</p>
+                <span>Net Weight: </span>
+                <p>{cardItem.net_weight}</p>
               </div>
               <div>
-              <span>Component Weight: </span>
-              <p>{cardItem.component_weight}</p>
+                <span>Component Weight: </span>
+                <p>{cardItem.component_weight}</p>
               </div>
               <div>
-              <span>Ghat Weight: </span>
-              <p>{cardItem.ghat_weight}</p>
+                <span>Ghat Weight: </span>
+                <p>{cardItem.ghat_weight}</p>
               </div>
-              
+
               {/* <p className={classes.price}>
                 <span>₹{cardItem.price} </span>
               </p> */}
