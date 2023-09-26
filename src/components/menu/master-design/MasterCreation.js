@@ -493,7 +493,7 @@ export default function MasterCreation() {
                                     {
                                         value: "silver jewellery",
                                         label: "Silver Jewellery"
-                                    }
+                                    } 
                                 ]}
                                 name="category"
                             /> */}
@@ -504,7 +504,7 @@ export default function MasterCreation() {
                   value={style}
                   defaultValue="Style1"
                   onBlur={styleHandleBlur}
-                  onChange={styleHandleChange}
+                  onChange={styleHandleChange} 
                   id="style"
                   name="style"
                   placeholder={"Select a style"}

@@ -11,6 +11,7 @@ import PlusIcon from "../../../icons/plus-icon";
 import useFilter from "../../../hooks/use-filter";
 import { motion, AnimatePresence } from "framer-motion";
 import useCheck from "../../../hooks/use-check";
+import useInput from "../../../hooks/use-input";
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -56,7 +57,7 @@ const DUMMY_LIST = [
     size: "Size 3",
     worker: "Worker 3",
     pieces: 1,
-    gross_weight: 120,
+    gross_weight: 130,
     stone_weight: 130,
     net_weight: 140,
     component_weight: 150,
@@ -82,7 +83,7 @@ const DUMMY_LIST = [
     size: "Size 2",
     worker: "Worker 2",
     pieces: 1,
-    gross_weight: 120,
+    gross_weight: 140,
     stone_weight: 130,
     net_weight: 140,
     component_weight: 150,
@@ -134,7 +135,7 @@ const DUMMY_LIST = [
     size: "Size 2",
     worker: "Worker 2",
     pieces: 1,
-    gross_weight: 120,
+    gross_weight: 130,
     stone_weight: 130,
     net_weight: 140,
     component_weight: 150,
@@ -160,7 +161,7 @@ const DUMMY_LIST = [
     size: "Size 3",
     worker: "Worker 3",
     pieces: 1,
-    gross_weight: 120,
+    gross_weight: 140,
     stone_weight: 130,
     net_weight: 140,
     component_weight: 150,
@@ -212,7 +213,7 @@ const DUMMY_LIST = [
     size: "Size 3",
     worker: "Worker 3",
     pieces: 1,
-    gross_weight: 120,
+    gross_weight: 130,
     stone_weight: 130,
     net_weight: 140,
     component_weight: 150,
@@ -238,7 +239,7 @@ const DUMMY_LIST = [
     size: "Size 1",
     worker: "Worker 1",
     pieces: 1,
-    gross_weight: 120,
+    gross_weight: 140,
     stone_weight: 130,
     net_weight: 140,
     component_weight: 150,
@@ -290,7 +291,7 @@ const DUMMY_LIST = [
     size: "Size 1",
     worker: "Worker 1",
     pieces: 1,
-    gross_weight: 120,
+    gross_weight: 130,
     stone_weight: 130,
     net_weight: 140,
     component_weight: 150,
@@ -316,7 +317,7 @@ const DUMMY_LIST = [
     size: "Size 2",
     worker: "Worker 2",
     pieces: 1,
-    gross_weight: 120,
+    gross_weight: 140,
     stone_weight: 130,
     net_weight: 140,
     component_weight: 150,
@@ -333,6 +334,27 @@ export default function ViewDesign() {
   const token = useRouteLoaderData("root");
   const [isShow, setIsShow] = useState(false);
   const [cardItem, setCardItem] = useState(null);
+  const [weightRange, setWeightRange]= useState();
+
+  const {
+    inputVal: fromWt,
+    isValid: fromWtIsValid,
+    hasErr: fromWtHasErr,
+    touchFn: fromWtTouchFn,
+    resetFn: fromWtResetFn,
+    handleBlur: fromWtHandleBlur,
+    handleChange: fromWtHandleChange,
+  } = useInput((inputValue) => inputValue.trim().length !== 0);
+
+  const {
+    inputVal: toWt,
+    isValid: toWtIsValid,
+    hasErr: toWtHasErr,
+    touchFn: toWtTouchFn,
+    resetFn: toWtResetFn,
+    handleBlur: toWtHandleBlur,
+    handleChange: toWtHandleChange,
+  } = useInput((inputValue) => inputValue.trim().length !== 0);
 
   // const [priceFilters, setPriceFilters] = useState({
   //   below350: false,
@@ -396,15 +418,12 @@ export default function ViewDesign() {
     three: false,
   });
 
-  const {
-    field: sizeFilters,
-    handleFieldCheckChange: handleSizeCheckChange,
-  } = useCheck({
-    one: false,
-    two: false,
-    three: false,
-  });
-
+  const { field: sizeFilters, handleFieldCheckChange: handleSizeCheckChange } =
+    useCheck({
+      one: false,
+      two: false,
+      three: false,
+    });
 
   function handleShowDetails(item) {
     setCardItem(item);
@@ -476,6 +495,26 @@ export default function ViewDesign() {
   //   });
   // }
 
+  let weightRangeIsValid=false;
+
+  if(fromWtIsValid && toWtIsValid){
+    weightRangeIsValid=true;
+  }
+
+  function handleSearchWeightRange(){
+    fromWtTouchFn();
+    toWtTouchFn();
+
+    if(!weightRangeIsValid){
+      return;
+    }
+    setWeightRange((prev)=>{
+      return {...prev, fromWt, toWt}
+    })
+    fromWtResetFn();
+    toWtResetFn();
+  }
+
   let filteredList = DUMMY_LIST.filter((item) => {
     if (mainGrpFilters.diamond && item.main_group === "Diamond") {
       return true;
@@ -511,33 +550,37 @@ export default function ViewDesign() {
       return true;
     }
 
-    if(productFilters.one && item.product === "Product 1"){
+    if (productFilters.one && item.product === "Product 1") {
       return true;
     }
-    if(productFilters.two && item.product === "Product 2"){
+    if (productFilters.two && item.product === "Product 2") {
       return true;
     }
-    if(productFilters.three && item.product === "Product 3"){
-      return true;
-    }
-
-    if(modelFilters.one && item.model === "Model 1"){
-      return true;
-    }
-    if(modelFilters.two && item.model === "Model 2"){
-      return true;
-    }
-    if(modelFilters.three && item.model === "Model 3"){
+    if (productFilters.three && item.product === "Product 3") {
       return true;
     }
 
-    if(sizeFilters.one && item.size === "Size 1"){
+    if (modelFilters.one && item.model === "Model 1") {
       return true;
     }
-    if(sizeFilters.two && item.size === "Size 2"){
+    if (modelFilters.two && item.model === "Model 2") {
       return true;
     }
-    if(sizeFilters.three && item.size === "Size 3"){
+    if (modelFilters.three && item.model === "Model 3") {
+      return true;
+    }
+
+    if (sizeFilters.one && item.size === "Size 1") {
+      return true;
+    }
+    if (sizeFilters.two && item.size === "Size 2") {
+      return true;
+    }
+    if (sizeFilters.three && item.size === "Size 3") {
+      return true;
+    }
+
+    if(weightRange?.fromWt <= item.gross_weight && weightRange?.toWt >= item.gross_weight){
       return true;
     }
 
@@ -565,6 +608,13 @@ export default function ViewDesign() {
   if (filteredList.length === 0) {
     filteredList = DUMMY_LIST;
   }
+
+  const fromWtClasses = `${classes["num-group"]} ${
+    fromWtHasErr ? classes["invalid"] : ""
+  }`;
+  const toWtClasses = `${classes["num-group"]} ${
+    toWtHasErr ? classes["invalid"] : ""
+  }`;
 
   let content = (
     <div key="whole-designs" className={classes["whole-designs-page"]}>
@@ -773,15 +823,33 @@ export default function ViewDesign() {
           {isProductFilterExpanded && (
             <div>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Product 1" name="one" checked={productFilters.one} onChange={handleProductCheckChange} />
+                <input
+                  type="checkbox"
+                  id="Product 1"
+                  name="one"
+                  checked={productFilters.one}
+                  onChange={handleProductCheckChange}
+                />
                 <label htmlFor="Product 1">Product 1</label>
               </p>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Product 2" name="two" checked={productFilters.two} onChange={handleProductCheckChange} />
+                <input
+                  type="checkbox"
+                  id="Product 2"
+                  name="two"
+                  checked={productFilters.two}
+                  onChange={handleProductCheckChange}
+                />
                 <label htmlFor="Product 2">Product 2</label>
               </p>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Product 3" name="three" checked={productFilters.three} onChange={handleProductCheckChange} />
+                <input
+                  type="checkbox"
+                  id="Product 3"
+                  name="three"
+                  checked={productFilters.three}
+                  onChange={handleProductCheckChange}
+                />
                 <label htmlFor="Product 3">Product 3</label>
               </p>
             </div>
@@ -799,15 +867,33 @@ export default function ViewDesign() {
           {isModelFilterExpanded && (
             <div>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Model 1" name="one" checked={modelFilters.one} onChange={handleModelCheckChange} />
+                <input
+                  type="checkbox"
+                  id="Model 1"
+                  name="one"
+                  checked={modelFilters.one}
+                  onChange={handleModelCheckChange}
+                />
                 <label htmlFor="Model 1">Model 1</label>
               </p>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Model 2" name="two" checked={modelFilters.two} onChange={handleModelCheckChange} />
+                <input
+                  type="checkbox"
+                  id="Model 2"
+                  name="two"
+                  checked={modelFilters.two}
+                  onChange={handleModelCheckChange}
+                />
                 <label htmlFor="Model 2">Model 2</label>
               </p>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Model 3" name="three" checked={modelFilters.three} onChange={handleModelCheckChange} />
+                <input
+                  type="checkbox"
+                  id="Model 3"
+                  name="three"
+                  checked={modelFilters.three}
+                  onChange={handleModelCheckChange}
+                />
                 <label htmlFor="Model 3">Model 3</label>
               </p>
             </div>
@@ -825,15 +911,33 @@ export default function ViewDesign() {
           {isSizeFilterExpanded && (
             <div>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Size 1" name="one" checked={sizeFilters.one} onChange={handleSizeCheckChange} />
+                <input
+                  type="checkbox"
+                  id="Size 1"
+                  name="one"
+                  checked={sizeFilters.one}
+                  onChange={handleSizeCheckChange}
+                />
                 <label htmlFor="Size 1">Size 1</label>
               </p>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Size 2" name="two" checked={sizeFilters.two} onChange={handleSizeCheckChange} />
+                <input
+                  type="checkbox"
+                  id="Size 2"
+                  name="two"
+                  checked={sizeFilters.two}
+                  onChange={handleSizeCheckChange}
+                />
                 <label htmlFor="Size 2">Size 2</label>
               </p>
               <p className={classes["checkbox-grp"]}>
-                <input type="checkbox" id="Size 3" name="three" checked={sizeFilters.three} onChange={handleSizeCheckChange} />
+                <input
+                  type="checkbox"
+                  id="Size 3"
+                  name="three"
+                  checked={sizeFilters.three}
+                  onChange={handleSizeCheckChange}
+                />
                 <label htmlFor="Size 3">Size 3</label>
               </p>
             </div>
@@ -841,8 +945,75 @@ export default function ViewDesign() {
         </div>
       </div>
 
-      <motion.div className={classes.designs}>
+      <div className={classes.designs}>
         <h1>View All Designs</h1>
+        <hr />
+        <section className={classes["weight-range"]}>
+          <fieldset className={classes.fieldset}>
+            <legend className={classes.legend}>Weight Range</legend>
+            <div className={fromWtClasses} style={{ maxWidth: "10%" }}>
+              <label htmlFor="fromWt">From Wt</label>
+              <input
+                value={fromWt}
+                onBlur={fromWtHandleBlur}
+                onChange={fromWtHandleChange}
+                id="fromWt"
+                name="fromWt"
+                placeholder="Enter from wt"
+                width="100%"
+                height="2rem"
+              />
+              {/* <AnimatePresence> */}
+              {fromWtHasErr && (
+                  <motion.p
+                  initial={{ height: 0}}
+                    animate={{ y: [-30,0], height:"auto", opacity:[0,1] }}
+                    // exit={{y:-10, opacity:0}}
+                    className={classes.err}
+                  >
+                    Enter valid number!
+                  </motion.p>
+                )}
+              {/* </AnimatePresence> */}
+                
+            </div>
+            <motion.div className={toWtClasses} style={{ maxWidth: "10%" }}>
+              <label htmlFor="toWt">To Wt</label>
+              <input
+                value={toWt}
+                onBlur={toWtHandleBlur}
+                onChange={toWtHandleChange}
+                id="toWt"
+                name="toWt"
+                placeholder="Enter to wt"
+                width="100%"
+                height="2rem"
+              />
+              {/* <AnimatePresence> */}
+              {toWtHasErr && (
+                  <motion.p
+                    initial={{ height: 0}}
+                    animate={{ y: [-30,0], height:"auto", opacity:[0,1] }}
+                    // exit={{y:-10, opacity:0}}
+                    className={classes.err}
+                  >
+                    Enter valid number!
+                  </motion.p>
+                )}
+              {/* </AnimatePresence> */}
+                
+            </motion.div>
+          </fieldset>
+          <div className={classes.search}>
+            <motion.button
+              whileHover={{ scale: 1.05, stiffness: 400, mass: 1 }}
+              onClick={handleSearchWeightRange}
+            >
+              Search
+            </motion.button>
+          </div>
+        </section>
+        <hr />
         <motion.ul
           variants={{
             hidden: { y: -20, opacity: 0 },
@@ -880,7 +1051,7 @@ export default function ViewDesign() {
             })}
           </AnimatePresence>
         </motion.ul>
-      </motion.div>
+      </div>
     </div>
   );
 
