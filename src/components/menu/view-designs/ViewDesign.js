@@ -11,16 +11,30 @@ import PlusIcon from "../../../icons/plus-icon";
 import useFilter from "../../../hooks/use-filter";
 import { motion, AnimatePresence } from "framer-motion";
 
+const today = new Date().toISOString().slice(0, 10);
+
 const DUMMY_LIST = [
   {
     id: "d1",
     title: "Design 1",
     description: "This is the first Design.",
     price: 300,
-    mainGrp: "Diamond",
+    main_grourp: "Diamond",
     category: "Diamond Jewelery",
-    brand: "Brand 1",
-    oldPrice: 350,
+    design_number: 1,
+    created_date: today,
+    style: "Style 2",
+    product: "Product 2",
+    model: "Model 2",
+    size: "Size 2",
+    worker: "Worker 2",
+    pieces: 1,
+    gross_weight: 120,
+    stone_weight: 130,
+    net_weight: 140,
+    component_weight: 150,
+    ghat_weight: 160,
+    remark: "Remarks description...",
     image: "https://picsum.photos/536/354",
     image1: "https://picsum.photos/536/301",
     image2: "https://picsum.photos/536/302",
@@ -31,10 +45,22 @@ const DUMMY_LIST = [
     title: "Design 2",
     description: "This is the second Design.",
     price: 350,
-    brand: "Brand 2",
-    mainGrp: "Gold",
+    main_group: "Gold",
     category: "Gold Jewelery",
-    oldPrice: 400,
+    design_number: 1,
+    created_date: today,
+    style: "Style 3",
+    product: "Product 3",
+    model: "Model 3",
+    size: "Size 3",
+    worker: "Worker 3",
+    pieces: 1,
+    gross_weight: 120,
+    stone_weight: 130,
+    net_weight: 140,
+    component_weight: 150,
+    ghat_weight: 160,
+    remark: "Remarks description...",
     image: "https://picsum.photos/536/355",
     image1: "https://picsum.photos/536/304",
     image2: "https://picsum.photos/536/305",
@@ -45,10 +71,22 @@ const DUMMY_LIST = [
     title: "Design 3",
     description: "This is the third Design.",
     price: 390,
-    mainGrp: "Diamond",
+    main_group: "Diamond",
     category: "Diamond Jewelery",
-    brand: "Brand 3",
-    oldPrice: 450,
+    design_number: 1,
+    created_date: today,
+    style: "Style 2",
+    product: "Product 2",
+    model: "Model 2",
+    size: "Size 2",
+    worker: "Worker 2",
+    pieces: 1,
+    gross_weight: 120,
+    stone_weight: 130,
+    net_weight: 140,
+    component_weight: 150,
+    ghat_weight: 160,
+    remark: "Remarks description...",
     image: "https://picsum.photos/536/353",
     image1: "https://picsum.photos/536/307",
     image2: "https://picsum.photos/536/308",
@@ -59,10 +97,22 @@ const DUMMY_LIST = [
     title: "Design 4",
     description: "This is the fourth Design.",
     price: 400,
-    mainGrp: "Gold",
+    main_group: "Gold",
     category: "Gold Jewelery",
-    brand: "Brand 4",
-    oldPrice: 480,
+    design_number: 1,
+    created_date: today,
+    style: "Style 1",
+    product: "Product 1",
+    model: "Model 1",
+    size: "Size 1",
+    worker: "Worker 1",
+    pieces: 1,
+    gross_weight: 120,
+    stone_weight: 130,
+    net_weight: 140,
+    component_weight: 150,
+    ghat_weight: 160,
+    remark: "Remarks description...",
     image: "https://picsum.photos/536/352",
     image1: "https://picsum.photos/536/310",
     image2: "https://picsum.photos/536/311",
@@ -73,10 +123,22 @@ const DUMMY_LIST = [
     title: "Design 5",
     description: "This is the fifth Design.",
     price: 450,
-    mainGrp: "Diamond",
+    main_group: "Diamond",
     category: "Diamond Jewelery",
-    brand: "Brand 5",
-    oldPrice: 500,
+    design_number: 1,
+    created_date: today,
+    style: "Style 2",
+    product: "Product 2",
+    model: "Model 2",
+    size: "Size 2",
+    worker: "Worker 2",
+    pieces: 1,
+    gross_weight: 120,
+    stone_weight: 130,
+    net_weight: 140,
+    component_weight: 150,
+    ghat_weight: 160,
+    remark: "Remarks description...",
     image: "https://picsum.photos/536/351",
     image1: "https://picsum.photos/536/313",
     image2: "https://picsum.photos/536/314",
@@ -87,10 +149,22 @@ const DUMMY_LIST = [
     title: "Design 6",
     description: "This is the sixth Design.",
     price: 500,
-    mainGrp: "Gold",
+    main_group: "Gold",
     category: "Gold Jewelery",
-    brand: "Brand 6",
-    oldPrice: 550,
+    design_number: 1,
+    created_date: today,
+    style: "Style 3",
+    product: "Product 3",
+    model: "Model 3",
+    size: "Size 3",
+    worker: "Worker 3",
+    pieces: 1,
+    gross_weight: 120,
+    stone_weight: 130,
+    net_weight: 140,
+    component_weight: 150,
+    ghat_weight: 160,
+    remark: "Remarks description...",
     image: "https://picsum.photos/536/356",
     image1: "https://picsum.photos/536/316",
     image2: "https://picsum.photos/536/317",
@@ -101,10 +175,22 @@ const DUMMY_LIST = [
     title: "Design 7",
     description: "This is the seventh Design.",
     price: 550,
-    mainGrp: "Diamond",
+    main_group: "Diamond",
     category: "Diamond Jewelery",
-    brand: "Brand 7",
-    oldPrice: 600,
+    design_number: 1,
+    created_date: today,
+    style: "Style 2",
+    product: "Product 2",
+    model: "Model 2",
+    size: "Size 2",
+    worker: "Worker 2",
+    pieces: 1,
+    gross_weight: 120,
+    stone_weight: 130,
+    net_weight: 140,
+    component_weight: 150,
+    ghat_weight: 160,
+    remark: "Remarks description...",
     image: "https://picsum.photos/536/357",
     image1: "https://picsum.photos/536/319",
     image2: "https://picsum.photos/536/320",
@@ -115,10 +201,22 @@ const DUMMY_LIST = [
     title: "Design 8",
     description: "This is the eighth Design.",
     price: 600,
-    mainGrp: "Gold",
+    main_group: "Gold",
     category: "Gold Jewelery",
-    brand: "Brand 8",
-    oldPrice: 650,
+    design_number: 1,
+    created_date: today,
+    style: "Style 3",
+    product: "Product 3",
+    model: "Model 3",
+    size: "Size 3",
+    worker: "Worker 3",
+    pieces: 1,
+    gross_weight: 120,
+    stone_weight: 130,
+    net_weight: 140,
+    component_weight: 150,
+    ghat_weight: 160,
+    remark: "Remarks description...",
     image: "https://picsum.photos/536/358",
     image1: "https://picsum.photos/536/322",
     image2: "https://picsum.photos/536/323",
@@ -129,10 +227,22 @@ const DUMMY_LIST = [
     title: "Design 9",
     description: "This is the ninth Design.",
     price: 650,
-    mainGrp: "Diamond",
+    main_group: "Diamond",
     category: "Diamond Jewelery",
-    brand: "Brand 9",
-    oldPrice: 700,
+    design_number: 1,
+    created_date: today,
+    style: "Style 1",
+    product: "Product 1",
+    model: "Model 1",
+    size: "Size 1",
+    worker: "Worker 1",
+    pieces: 1,
+    gross_weight: 120,
+    stone_weight: 130,
+    net_weight: 140,
+    component_weight: 150,
+    ghat_weight: 160,
+    remark: "Remarks description...",
     image: "https://picsum.photos/536/359",
     image1: "https://picsum.photos/536/325",
     image2: "https://picsum.photos/536/326",
@@ -143,10 +253,22 @@ const DUMMY_LIST = [
     title: "Design 10",
     description: "This is the tenth Design.",
     price: 700,
-    mainGrp: "Gold",
+    main_group: "Gold",
     category: "Gold Jewelery",
-    brand: "Brand 10",
-    oldPrice: 750,
+    design_number: 1,
+    created_date: today,
+    style: "Style 2",
+    product: "Product 2",
+    model: "Model 2",
+    size: "Size 2",
+    worker: "Worker 2",
+    pieces: 1,
+    gross_weight: 120,
+    stone_weight: 130,
+    net_weight: 140,
+    component_weight: 150,
+    ghat_weight: 160,
+    remark: "Remarks description...",
     image: "https://picsum.photos/536/360",
     image1: "https://picsum.photos/536/328",
     image2: "https://picsum.photos/536/329",
@@ -157,24 +279,53 @@ const DUMMY_LIST = [
     title: "Design 11",
     description: "This is the 11th Design.",
     price: 750,
-    mainGrp: "Diamond",
+    main_group: "Diamond",
     category: "Diamond Jewelery",
-    brand: "Brand 11",
-    oldPrice: 800,
+    design_number: 1,
+    created_date: today,
+    style: "Style 1",
+    product: "Product 1",
+    model: "Model 1",
+    size: "Size 1",
+    worker: "Worker 1",
+    pieces: 1,
+    gross_weight: 120,
+    stone_weight: 130,
+    net_weight: 140,
+    component_weight: 150,
+    ghat_weight: 160,
+    remark: "Remarks description...",
     image: "https://picsum.photos/536/361",
     image1: "https://picsum.photos/536/331",
     image2: "https://picsum.photos/536/332",
     image3: "https://picsum.photos/536/333",
   },
-  //   {
-  //     id: "d",
-  //     title: "Design ",
-  //     description: "This is the  Design.",
-  //     price: 300,
-  //     brand: "Brand ",
-  //     oldPrice: 350,
-  //     image: "https://picsum.photos/536/362",
-  //   },
+  {
+    id: "d12",
+    title: "Design 12",
+    description: "This is the 12th Design.",
+    price: 750,
+    main_group: "Gold",
+    category: "Gold Jewelery",
+    design_number: 1,
+    created_date: today,
+    style: "Style 2",
+    product: "Product 2",
+    model: "Model 2",
+    size: "Size 2",
+    worker: "Worker 2",
+    pieces: 1,
+    gross_weight: 120,
+    stone_weight: 130,
+    net_weight: 140,
+    component_weight: 150,
+    ghat_weight: 160,
+    remark: "Remarks description...",
+    image: "https://picsum.photos/536/361",
+    image1: "https://picsum.photos/536/331",
+    image2: "https://picsum.photos/536/332",
+    image3: "https://picsum.photos/536/333",
+  },
 ];
 
 export default function ViewDesign() {
@@ -201,10 +352,10 @@ export default function ViewDesign() {
     setIsShow(false);
   }
 
-  const {
-    isExpanded: isPriceFilterExpanded,
-    handleToggle: handleExpandPriceFilter,
-  } = useFilter();
+  // const {
+  //   isExpanded: isPriceFilterExpanded,
+  //   handleToggle: handleExpandPriceFilter,
+  // } = useFilter();
 
   const {
     isExpanded: isCategoryFilterExpanded,
@@ -264,10 +415,10 @@ export default function ViewDesign() {
   }
 
   let filteredList = DUMMY_LIST.filter((item) => {
-    if (mainGrpFilters.diamond && item.mainGrp === "Diamond") {
+    if (mainGrpFilters.diamond && item.main_group === "Diamond") {
       return true;
     }
-    if (mainGrpFilters.gold && item.mainGrp === "Gold") {
+    if (mainGrpFilters.gold && item.main_group === "Gold") {
       return true;
     }
 
@@ -301,7 +452,7 @@ export default function ViewDesign() {
       <div className={classes["whole-filter"]}>
         <h2>Shop By</h2>
         <div className={classes.filter}>
-          <div
+          {/* <div
             className={classes["filter-field"]}
             onClick={handleExpandPriceFilter}
           >
@@ -343,7 +494,7 @@ export default function ViewDesign() {
                 <label htmlFor="between500and1000">₹500 - ₹1000</label>
               </p>
             </div>
-          )}
+          )} */}
 
           <div
             className={classes["filter-field"]}
@@ -606,12 +757,73 @@ export default function ViewDesign() {
           {/* </div> */}
           <section className={classes.content}>
             <h2 className={classes.title}>{cardItem.title}</h2>
-            <p className={classes.brand}>{cardItem.brand}</p>
             <p>{cardItem.description}</p>
-            <p className={classes.price}>
-              <span>₹{cardItem.price} </span>
-              <del>₹{cardItem.oldPrice}</del>
-            </p>
+            <div className={classes["cardItem-details"]}>
+              <div>
+                <span>Design No.: </span>
+                <p>{cardItem.design_number}</p>
+              </div>
+              <div>
+                <span>Mian Group: </span>
+                <p>{cardItem.main_group}</p>
+              </div>
+              <div>
+                <span>Category: </span>
+                <p>{cardItem.category}</p>
+              </div>
+              <div>
+              <span>Created Date: </span>
+              <p>{cardItem.created_date}</p>
+              </div>
+              <div>
+              <span>Style: </span>
+              <p>{cardItem.style}</p>
+              </div>
+              <div>
+              <span>Product: </span>
+              <p>{cardItem.product}</p>
+              </div>
+              <div>
+              <span>Model: </span>
+              <p>{cardItem.model}</p>
+              </div>
+              <div>
+                <span>Size: </span>
+                <p>{cardItem.size}</p>
+              </div>
+              <div>
+              <span>Worker: </span>
+              <p>{cardItem.worker}</p>
+              </div>
+              <div>
+              <span>Pieces: </span>
+              <p>{cardItem.pieces}</p>
+              </div>
+              <div>
+              <span>Gross Weight: </span>
+              <p>{cardItem.gross_weight}</p>
+              </div>
+              <div>
+              <span>Stone Weight: </span>
+              <p>{cardItem.stone_weight}</p>
+              </div>
+              <div>
+              <span>Net Weight: </span>
+              <p>{cardItem.net_weight}</p>
+              </div>
+              <div>
+              <span>Component Weight: </span>
+              <p>{cardItem.component_weight}</p>
+              </div>
+              <div>
+              <span>Ghat Weight: </span>
+              <p>{cardItem.ghat_weight}</p>
+              </div>
+              
+              {/* <p className={classes.price}>
+                <span>₹{cardItem.price} </span>
+              </p> */}
+            </div>
             <div className={classes.actions}>
               <motion.button
                 whileHover={{ scale: 1.05 }}

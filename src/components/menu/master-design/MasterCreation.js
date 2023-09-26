@@ -11,6 +11,11 @@ export default function MasterCreation() {
 
  const navigate= useNavigate();   
 
+ const [image_url, setImageUrl]= useState();
+ const [image_urlTouch, setImageUrlTouch]= useState(false);
+
+ const image_urlHasErr= image_urlTouch && !image_url;
+
   const [rowDataArr, setRowDataArr] = useState([]);
 
   const today = new Date().toISOString().slice(0, 10);
@@ -21,7 +26,7 @@ export default function MasterCreation() {
   }
 
   const [enteredRowData, setEnteredRowData] = useState([]);
-  const [enteredFormData, setEnteredFormData] = useState(null);
+  // const [enteredFormData, setEnteredFormData] = useState();
 
   const {
     inputVal: main_group,
@@ -233,7 +238,8 @@ export default function MasterCreation() {
     typeIsValid &&
     stone_groupIsValid &&
     pieces1IsValid &&
-    stone_weight1IsValid
+    stone_weight1IsValid &&
+    image_url
   ) {
     formIsValid = true;
   }
@@ -268,6 +274,9 @@ export default function MasterCreation() {
     stone_groupResetFn();
     pieces1ResetFn();
     stone_weight1ResetFn();
+
+    setImageUrl();
+    setImageUrlTouch(false);
   }
 
   function handleAdd() {
@@ -303,6 +312,8 @@ export default function MasterCreation() {
   }
 
   function handleSave() {
+    setImageUrlTouch(true);
+
     main_groupTouchFn();
     categoryTouchFn();
     styleTouchFn();
@@ -323,10 +334,15 @@ export default function MasterCreation() {
     stone_weight1TouchFn();
 
     if (!formIsValid) {
+      if(image_urlHasErr){
+        window.alert("Add an image!");
+       }
       return;
     }
 
-    const enteredData = {
+    const enteredFormData = {
+      design_number:1,
+      image_url,
       created_date,
       main_group,
       category,
@@ -345,18 +361,24 @@ export default function MasterCreation() {
       stone_descrition: enteredRowData,
     };
 
-    setEnteredFormData((prev)=>{
-        return {...prev, ...enteredData}
-    });
+    // setEnteredFormData((prev)=>{
+    //     return {...prev, ...enteredData}
+    // });
 
     localStorage.setItem("DATA",JSON.stringify(enteredFormData));
     console.log(enteredFormData);
 
-    ResetAll();
+    // ResetAll();
   }
 
   function handleExit(){
     navigate("/menu/master-design");
+  }
+
+  function handleAddImage(){
+    setImageUrl("https://picsum.photos/536/361");
+    setImageUrlTouch(true);
+    window.alert("Image added successfully!");
   }
 
 
@@ -878,7 +900,7 @@ export default function MasterCreation() {
           </div>
           <CreationTable rowDataArr={rowDataArr} />
           <div className={classes.actions}>
-            <button style={{ marginRight: "3rem" }}>Add Image</button>
+            <button onClick={handleAddImage} style={{ marginRight: "3rem" }}>Add Image</button>
             <button onClick={handleSave}>Save</button>
             <button onClick={ResetAll}>Clear</button>
             <button onClick={handleExit}>Exit</button>
