@@ -8,12 +8,13 @@
 .head-content{
     position: sticky;
     top:0;
-    background-color: rgb(253, 234, 200);
+    background-color: #fcf2f3;
     margin-bottom: 1rem;
 }
 .filters{
     display: flex;
     align-items: flex-start;
+    justify-content: center;
     flex-wrap: wrap;
     width: 100%;
     margin-top: 1rem;
@@ -31,6 +32,9 @@
 
 .filter-options{
     z-index: 10;
+    min-width: 10rem;
+    max-height: 15rem;
+    overflow-y: auto;
     border: 1px solid #f7ba60;
     padding: 0.35rem 0.5rem;
     position: absolute;
@@ -85,8 +89,27 @@
 }
 
 .selected-filters{
+    list-style: none;
+    align-items: center;
+    display: flex;
+    margin: 0;
+    padding: 0.5rem 0.5rem;
+    gap:1rem;
+    border-bottom: 1px solid #ccc;
+    flex-wrap: wrap;
+}
+.selected-filters li{
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    padding: 0.5rem 0.75rem;
+    background-color: rgb(248, 187, 169);
     display: flex;
     gap:1rem;
+}
+.clear{
+    font-weight: 500;
+    cursor: pointer;
 }
 
 
@@ -256,7 +279,8 @@
 .card-details{
     display: flex;
     width:80%;
-    background-color: rgb(234, 243, 250);
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
     min-height: 60vh;
     align-items: stretch;
 }

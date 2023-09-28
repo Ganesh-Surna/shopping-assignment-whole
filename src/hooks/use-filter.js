@@ -6,9 +6,13 @@ export default function useFilter(){
     function handleToggle(){
         setIsExpanded((prev)=>!prev);
     }
+    function handleSetIsExpanded(bool){
+        setIsExpanded(bool);
+    }
 
     return {
         isExpanded,
         handleToggle,
+        handleSetIsExpanded,
     }
 }

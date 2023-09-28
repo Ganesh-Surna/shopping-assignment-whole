@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classes from "./ViewDesign.module.css";
 import { useRouteLoaderData } from "react-router-dom";
 import { Carousel } from "antd";
@@ -12,6 +12,9 @@ import useFilter from "../../../hooks/use-filter";
 import { motion, AnimatePresence } from "framer-motion";
 import useCheck from "../../../hooks/use-check";
 import useInput from "../../../hooks/use-input";
+import { useDispatch, useSelector } from "react-redux";
+import { uiActions } from "../../../store/ui-slice";
+import WrongIcon from "../../../icons/wrong-icon";
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -330,113 +333,65 @@ const DUMMY_LIST = [
   },
 ];
 
+
 export default function ViewDesign() {
   const token = useRouteLoaderData("root");
+  const dispatch= useDispatch();
 
-  const [selectedFilters, setSelectedFilters]= useState([]);
+  const selectedFilters= useSelector(state=>state.ui.selectedFilters);
 
-  const [isShow, setIsShow] = useState(false);
-  const [cardItem, setCardItem] = useState(null);
-  const [weightRange, setWeightRange] = useState();
-
-  const {
-    inputVal: fromWt,
-    isValid: fromWtIsValid,
-    hasErr: fromWtHasErr,
-    touchFn: fromWtTouchFn,
-    resetFn: fromWtResetFn,
-    handleBlur: fromWtHandleBlur,
-    handleChange: fromWtHandleChange,
-  } = useInput((inputValue) => inputValue.trim().length !== 0);
-
-  const {
-    inputVal: toWt,
-    isValid: toWtIsValid,
-    hasErr: toWtHasErr,
-    touchFn: toWtTouchFn,
-    resetFn: toWtResetFn,
-    handleBlur: toWtHandleBlur,
-    handleChange: toWtHandleChange,
-  } = useInput((inputValue) => inputValue.trim().length !== 0);
-
-  // const [priceFilters, setPriceFilters] = useState({
-  //   below350: false,
-  //   between350and500: false,
-  //   between500and1000: false,
-  // });
-
-  // const [mainGrpFilters, setMainGrpFilters] = useState({
-  //   gold: false,
-  //   diamond: false,
-  // });
-
-  const {
-    field: mainGrpFilters,
-    handleFieldCheckChange: handleMainGroupCheckChange,
-  } = useCheck({
-    gold: false,
-    diamond: false,
+  const [mainGrpFilters, setMainGrpFilters]= useState({
+    "Gold": false,
+    "Diamond": false,
   });
-
-  const {
-    field: categoryFilters,
-    handleFieldCheckChange: handleCategoryCheckChange,
-  } = useCheck({
-    goldJewelery: false,
-    diamondJewelery: false,
+  const [categoryFilters, setCategoryFilters]= useState({
+    "Gold Jewelery": false,
+    "Diamond Jewelery": false,
   });
-
-  const {
-    field: designNumFilters,
-    handleFieldCheckChange: handleDesignNumCheckChange,
-  } = useCheck({
-    one: false,
-    two: false,
+  const [designNumFilters, setDesignNumFilters]= useState({
+    "D.No:1": false,
+    "D.No:2": false,
   });
-
-  const {
-    field: styleFilters,
-    handleFieldCheckChange: handleStyleCheckChange,
-  } = useCheck({
-    one: false,
-    two: false,
-    three: false,
+  const [styleFilters, setStyleFilters]= useState({
+    "Style 1": false,
+    "Style 2": false,
+    "Style 3": false,
   });
-
-  const {
-    field: productFilters,
-    handleFieldCheckChange: handleProductCheckChange,
-  } = useCheck({
-    one: false,
-    two: false,
-    three: false,
+  const [productFilters, setProductFilters]= useState({
+    "Product 1": false,
+    "Product 2": false,
+    "Product 3": false,
   });
-
-  const {
-    field: weightRangeFilters,
-    handleFieldCheckChange: handleWtCheckChange,
-  } = useCheck({
+  const [weightRangeFilters, setWeightRangeFilters]= useState({
     "0-10grms": false,
     "10-20grms": false,
     "20-50grms": false,
     "50-100grms": false,
   });
-
-  const {
-    field: modelFilters,
-    handleFieldCheckChange: handleModelCheckChange,
-  } = useCheck({
-    one: false,
-    two: false,
-    three: false,
+  const [modelFilters, setModelFilters]= useState({
+    "Model 1": false,
+    "Model 2": false,
+    "Model 3": false,
+  });
+  const [sizeFilters, setSizeFilters]= useState({
+    "Size 1": false,
+    "Size 2": false,
+    "Size 3": false,
   });
 
-  const { field: sizeFilters, handleFieldCheckChange: handleSizeCheckChange } =
-    useCheck({
-      one: false,
-      two: false,
-      three: false,
-    });
+  const {
+    "mainGrpFilter": isMainGrpFilterExpanded,
+    "categoryFilter": isCategoryFilterExpanded,
+    "designFilter": isDesignFilterExpanded,
+    "styleFilter": isStyleFilterExpanded,
+    "productFilter": isProductFilterExpanded,
+    "wtFilter": isWtFilterExpanded,
+    "moreFilter": isMoreFilterExpanded,
+  } = useSelector((state) => state.ui.filters);
+
+  const [isShow, setIsShow] = useState(false);
+  const [cardItem, setCardItem] = useState(null);
+
 
   function handleShowDetails(item) {
     setCardItem(item);
@@ -446,178 +401,231 @@ export default function ViewDesign() {
     setIsShow(false);
   }
 
-  // const {
-  //   isExpanded: isPriceFilterExpanded,
-  //   handleToggle: handleExpandPriceFilter,
-  // } = useFilter();
+  function handleExpandMainGrpFilter(){
+    dispatch(uiActions.expandFilter("mainGrpFilter"));
+  }
+  function handleExpandCategoryFilter(){
+    dispatch(uiActions.expandFilter("categoryFilter"));
+  }
+  function handleExpandDesignFilter(){
+    dispatch(uiActions.expandFilter("designFilter"));
+  }
+  function handleExpandMoreFilter(){
+    dispatch(uiActions.expandFilter("moreFilter"));
+  }
+  function handleExpandProductFilter(){
+    dispatch(uiActions.expandFilter("productFilter"));
+  }
+  function handleExpandStyleFilter(){
+    dispatch(uiActions.expandFilter("styleFilter"));
+  }
+  function handleExpandWtFilter(){
+    dispatch(uiActions.expandFilter("wtFilter"));
+  }
 
-  const {
-    isExpanded: isCategoryFilterExpanded,
-    handleToggle: handleExpandCategoryFilter,
-  } = useFilter();
 
-  const {
-    isExpanded: isDesignFilterExpanded,
-    handleToggle: handleExpandDesignFilter,
-  } = useFilter();
+  function handleMainGroupCheckChange(event){
+    const { name, checked, id } = event.target;
+    console.log(event.target);
+    console.log(name, checked, id);
 
-  const {
-    isExpanded: isMainGrpFilterExpanded,
-    handleToggle: handleExpandMainGrpFilter,
-  } = useFilter();
+    setMainGrpFilters((prev) => {
+      return {
+        ...prev,
+        [name]: checked,
+      };
+    });
+    dispatch(uiActions.closeFilters());
+    dispatch(uiActions.selectFilter({label:name, id, event:event.target}));
+  }
+  function handleCategoryCheckChange(event){
+    const { name, checked, id } = event.target;
 
-  const {
-    isExpanded: isStyleFilterExpanded,
-    handleToggle: handleExpandStyleFilter,
-  } = useFilter();
+    setCategoryFilters((prev) => {
+      return {
+        ...prev,
+        [name]: checked,
+      };
+    });
+    dispatch(uiActions.closeFilters());
+    dispatch(uiActions.selectFilter({label:name, id}));
+  }
+  function handleDesignNumCheckChange(event){
+    const { name, checked, id } = event.target;
 
-  const {
-    isExpanded: isProductFilterExpanded,
-    handleToggle: handleExpandProductFilter,
-  } = useFilter();
+    setDesignNumFilters((prev) => {
+      return {
+        ...prev,
+        [name]: checked,
+      };
+    });
+    dispatch(uiActions.closeFilters());
+    dispatch(uiActions.selectFilter({label:name, id}));
+  }
+  function handleProductCheckChange(event){
+    const { name, checked, id } = event.target;
 
-  const {
-    isExpanded: isWtFilterExpanded,
-    handleToggle: handleExpandWtFilter,
-  } = useFilter();
+    setProductFilters((prev) => {
+      return {
+        ...prev,
+        [name]: checked,
+      };
+    });
+    dispatch(uiActions.closeFilters());
+    dispatch(uiActions.selectFilter({label:name, id}));
+  }
+  function handleModelCheckChange(event){
+    const { name, checked, id } = event.target;
 
-  const {
-    isExpanded: isMoreFilterExpanded,
-    handleToggle: handleExpandMoreFilter,
-  } = useFilter();
+    setModelFilters((prev) => {
+      return {
+        ...prev,
+        [name]: checked,
+      };
+    });
+    dispatch(uiActions.closeFilters());
+    dispatch(uiActions.selectFilter({label:name, id}));
+  }
+  function handleStyleCheckChange(event){
+    const { name, checked, id } = event.target;
 
-  const {
-    isExpanded: isSizeFilterExpanded,
-    handleToggle: handleExpandSizeFilter,
-  } = useFilter();
+    setStyleFilters((prev) => {
+      return {
+        ...prev,
+        [name]: checked,
+      };
+    });
+    dispatch(uiActions.closeFilters());
+    dispatch(uiActions.selectFilter({label:name, id}));
+  }
+  function handleSizeCheckChange(event){
+    const { name, checked, id } = event.target;
 
-  // function handlePriceCheckChange(event) {
-  //   const { name, checked } = event.target;
+    setSizeFilters((prev) => {
+      return {
+        ...prev,
+        [name]: checked,
+      };
+    });
+    dispatch(uiActions.closeFilters());
+    dispatch(uiActions.selectFilter({label:name, id}));
+  }
+  function handleWtCheckChange(event){
+    const { name, checked, id } = event.target;
 
-  //   setPriceFilters((prev) => {
-  //     return {
-  //       ...prev,
-  //       [name]: checked,
-  //     };
-  //   });
-  // }
+    setWeightRangeFilters((prev) => {
+      return {
+        ...prev,
+        [name]: checked,
+      };
+    });
+    dispatch(uiActions.closeFilters());
+    dispatch(uiActions.selectFilter({label:name, id}));
+  }
 
-  // function handleMainCheckGrpChange(event) {
-  //   const { name, checked } = event.target;
+  function handleRemoveFilter(id, event){
+    // const filterOption= document.getElementById(id);
+    console.log(event);
+    event[id]=false;
+    dispatch(uiActions.removeFilter(id));
+  }
 
-  //   setMainGrpFilters((prev) => {
-  //     return {
-  //       ...prev,
-  //       [name]: checked,
-  //     };
-  //   });
-  // }
+  function handleClearAllFilters(){
+    dispatch(uiActions.clearFilters());
+  }
 
-  
+  console.log(selectedFilters);
+
 
   let filteredList = DUMMY_LIST.filter((item) => {
-    if (mainGrpFilters.diamond && item.main_group === "Diamond") {
+    if (mainGrpFilters["Diamond"] && item.main_group === "Diamond") {
       return true;
     }
-    if (mainGrpFilters.gold && item.main_group === "Gold") {
+    if (mainGrpFilters["Gold"] && item.main_group === "Gold") {
       return true;
     }
 
-    if (categoryFilters.goldJewelery && item.category === "Gold Jewelery") {
+    if (categoryFilters["Gold Jewelery"] && item.category === "Gold Jewelery") {
       return true;
     }
     if (
-      categoryFilters.diamondJewelery &&
+      categoryFilters["Diamond Jewelery"] &&
       item.category === "Diamond Jewelery"
     ) {
       return true;
     }
 
-    if (designNumFilters.one && item.design_number === 1) {
+    if (designNumFilters["D.No:1"] && item.design_number === 1) {
       return true;
     }
-    if (designNumFilters.two && item.design_number === 2) {
-      return true;
-    }
-
-    if (styleFilters.one && item.style === "Style 1") {
-      return true;
-    }
-    if (styleFilters.two && item.style === "Style 2") {
-      return true;
-    }
-    if (styleFilters.three && item.style === "Style 3") {
+    if (designNumFilters["D.No:2"] && item.design_number === 2) {
       return true;
     }
 
-    if (productFilters.one && item.product === "Product 1") {
+    if (styleFilters["Style 1"] && item.style === "Style 1") {
       return true;
     }
-    if (productFilters.two && item.product === "Product 2") {
+    if (styleFilters["Style 2"] && item.style === "Style 2") {
       return true;
     }
-    if (productFilters.three && item.product === "Product 3") {
-      return true;
-    }
-
-    if (modelFilters.one && item.model === "Model 1") {
-      return true;
-    }
-    if (modelFilters.two && item.model === "Model 2") {
-      return true;
-    }
-    if (modelFilters.three && item.model === "Model 3") {
+    if (styleFilters["Style 3"] && item.style === "Style 3") {
       return true;
     }
 
-    if (sizeFilters.one && item.size === "Size 1") {
+    if (productFilters["Product 1"] && item.product === "Product 1") {
       return true;
     }
-    if (sizeFilters.two && item.size === "Size 2") {
+    if (productFilters["Product 2"] && item.product === "Product 2") {
       return true;
     }
-    if (sizeFilters.three && item.size === "Size 3") {
+    if (productFilters["Product 3"] && item.product === "Product 3") {
       return true;
     }
 
+    if (modelFilters["Model 1"] && item.model === "Model 1") {
+      return true;
+    }
+    if (modelFilters["Model 2"] && item.model === "Model 2") {
+      return true;
+    }
+    if (modelFilters["Model 3"] && item.model === "Model 3") {
+      return true;
+    }
+
+    if (sizeFilters["Size 1"] && item.size === "Size 1") {
+      return true;
+    }
+    if (sizeFilters["Size 2"] && item.size === "Size 2") {
+      return true;
+    }
+    if (sizeFilters["Size 3"] && item.size === "Size 3") {
+      return true;
+    }
+
+    if (weightRangeFilters["0-10grms"] && item.gross_weight <= 10) {
+      return true;
+    }
     if (
-      weightRangeFilters["0-10grms"] && item.gross_weight<=10
+      weightRangeFilters["10-20grms"] &&
+      item.gross_weight > 10 &&
+      item.gross_weight <= 20
     ) {
       return true;
     }
     if (
-      weightRangeFilters["10-20grms"] && item.gross_weight>10 && item.gross_weight<=20
+      weightRangeFilters["20-50grms"] &&
+      item.gross_weight > 20 &&
+      item.gross_weight <= 50
     ) {
       return true;
     }
     if (
-      weightRangeFilters["20-50grms"] && item.gross_weight>20 && item.gross_weight<=120
+      weightRangeFilters["50-100grms"] &&
+      item.gross_weight > 50 &&
+      item.gross_weight <= 100
     ) {
       return true;
     }
-    if (
-      weightRangeFilters["50-100grms"] && item.gross_weight>120 && item.gross_weight<=130
-    ) {
-      return true;
-    }
-
-    // if (item.price < 350 && priceFilters.below350) {
-    //   return true;
-    // }
-    // if (
-    //   priceFilters.between350and500 &&
-    //   item.price >= 350 &&
-    //   item.price <= 500
-    // ) {
-    //   return true;
-    // }
-    // if (
-    //   priceFilters.between500and1000 &&
-    //   item.price > 500 &&
-    //   item.price <= 1000
-    // ) {
-    //   return true;
-    // }
 
     return false;
   });
@@ -626,422 +634,90 @@ export default function ViewDesign() {
     filteredList = DUMMY_LIST;
   }
 
-  // const fromWtClasses = `${classes["num-group"]} ${
-  //   fromWtHasErr ? classes["invalid"] : ""
-  // }`;
-  // const toWtClasses = `${classes["num-group"]} ${
-  //   toWtHasErr ? classes["invalid"] : ""
-  // }`;
 
   let content = (
     <div key="whole-designs" className={classes["whole-designs-page"]}>
-      {/* <div className={classes["whole-filter"]}>
-        <h2>Shop By</h2>
-        <div className={classes.filter}>
-          {/* <div
-            className={classes["filter-field"]}
-            onClick={handleExpandPriceFilter}
-          >
-            <span className={classes.title}>PRICE</span>
-            <span className={classes.symbol}>
-              {isPriceFilterExpanded ? <MinusIcon /> : <PlusIcon />}
-            </span>
-          </div>
-          {isPriceFilterExpanded && (
-            <div>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="below350"
-                  name="below350"
-                  checked={priceFilters.below350}
-                  onChange={handlePriceChange}
-                />
-                <label htmlFor="below350">Below ₹350</label>
-              </p>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="between350and500"
-                  name="between350and500"
-                  checked={priceFilters.between350and500}
-                  onChange={handlePriceCheckChange}
-                />
-                <label htmlFor="between350and500">₹350 - ₹500</label>
-              </p>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="between500and1000"
-                  name="between500and1000"
-                  checked={priceFilters.between500and1000}
-                  onChange={handlePriceChange}
-                />
-                <label htmlFor="between500and1000">₹500 - ₹1000</label>
-              </p>
-            </div>
-          )}
-
-          <div
-            className={classes["filter-field"]}
-            onClick={handleExpandMainGrpFilter}
-          >
-            <span className={classes.title}>Main Group</span>
-            <span className={classes.symbol}>
-              {isMainGrpFilterExpanded ? <MinusIcon /> : <PlusIcon />}
-            </span>
-          </div>
-          {isMainGrpFilterExpanded && (
-            <div>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="diamond"
-                  name="diamond"
-                  checked={mainGrpFilters.diamond}
-                  onChange={handleMainGroupCheckChange}
-                />
-                <label htmlFor="diamond">Diamond</label>
-              </p>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="gold"
-                  name="gold"
-                  checked={mainGrpFilters.gold}
-                  onChange={handleMainGroupCheckChange}
-                />
-                <label htmlFor="gold">Gold</label>
-              </p>
-            </div>
-          )}
-
-          <div
-            className={classes["filter-field"]}
-            onClick={handleExpandCategoryFilter}
-          >
-            <span className={classes.title}>CATEGORY</span>
-            <span className={classes.symbol}>
-              {isCategoryFilterExpanded ? <MinusIcon /> : <PlusIcon />}
-            </span>
-          </div>
-          {isCategoryFilterExpanded && (
-            <div>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="Diamond Jewelery"
-                  name="diamondJewelery"
-                  checked={categoryFilters.diamondJewelery}
-                  onChange={handleCategoryCheckChange}
-                />
-                <label htmlFor="Diamond Jewelery">Diamond Jewelery</label>
-              </p>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="Gold Jewelery"
-                  name="goldJewelery"
-                  checked={categoryFilters.goldJewelery}
-                  onChange={handleCategoryCheckChange}
-                />
-                <label htmlFor="Gold Jewelery">GOLD Jewelery</label>
-              </p>
-            </div>
-          )}
-
-          <div
-            className={classes["filter-field"]}
-            onClick={handleExpandDesignFilter}
-          >
-            <span className={classes.title}>DESIGN NO.</span>
-            <span className={classes.symbol}>
-              {isDesignFilterExpanded ? <MinusIcon /> : <PlusIcon />}
-            </span>
-          </div>
-          {isDesignFilterExpanded && (
-            <div>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="1"
-                  name="one"
-                  checked={designNumFilters.one}
-                  onChange={handleDesignNumCheckChange}
-                />
-                <label htmlFor="1">1</label>
-              </p>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="2"
-                  name="two"
-                  checked={designNumFilters.two}
-                  onChange={handleDesignNumCheckChange}
-                />
-                <label htmlFor="2">2</label>
-              </p>
-            </div>
-          )}
-
-          <div
-            className={classes["filter-field"]}
-            onClick={handleExpandStyleFilter}
-          >
-            <span className={classes.title}>STYLE</span>
-            <span className={classes.symbol}>
-              {isStyleFilterExpanded ? <MinusIcon /> : <PlusIcon />}
-            </span>
-          </div>
-          {isStyleFilterExpanded && (
-            <div>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="Style 1"
-                  name="one"
-                  checked={styleFilters.one}
-                  onChange={handleStyleCheckChange}
-                />
-                <label htmlFor="Style 1">Style 1</label>
-              </p>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="Style 2"
-                  name="two"
-                  checked={styleFilters.two}
-                  onChange={handleStyleCheckChange}
-                />
-                <label htmlFor="Style 2">Style 2</label>
-              </p>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="Style 3"
-                  name="three"
-                  checked={styleFilters.three}
-                  onChange={handleStyleCheckChange}
-                />
-                <label htmlFor="Style 3">Style 3</label>
-              </p>
-            </div>
-          )}
-
-          <div
-            className={classes["filter-field"]}
-            onClick={handleExpandProductFilter}
-          >
-            <span className={classes.title}>PRODUCT</span>
-            <span className={classes.symbol}>
-              {isProductFilterExpanded ? <MinusIcon /> : <PlusIcon />}
-            </span>
-          </div>
-          {isProductFilterExpanded && (
-            <div>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="Product 1"
-                  name="one"
-                  checked={productFilters.one}
-                  onChange={handleProductCheckChange}
-                />
-                <label htmlFor="Product 1">Product 1</label>
-              </p>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="Product 2"
-                  name="two"
-                  checked={productFilters.two}
-                  onChange={handleProductCheckChange}
-                />
-                <label htmlFor="Product 2">Product 2</label>
-              </p>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="Product 3"
-                  name="three"
-                  checked={productFilters.three}
-                  onChange={handleProductCheckChange}
-                />
-                <label htmlFor="Product 3">Product 3</label>
-              </p>
-            </div>
-          )}
-
-          <div
-            className={classes["filter-field"]}
-            onClick={handleExpandModelFilter}
-          >
-            <span className={classes.title}>MODEL</span>
-            <span className={classes.symbol}>
-              {isModelFilterExpanded ? <MinusIcon /> : <PlusIcon />}
-            </span>
-          </div>
-          {isModelFilterExpanded && (
-            <div>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="Model 1"
-                  name="one"
-                  checked={modelFilters.one}
-                  onChange={handleModelCheckChange}
-                />
-                <label htmlFor="Model 1">Model 1</label>
-              </p>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="Model 2"
-                  name="two"
-                  checked={modelFilters.two}
-                  onChange={handleModelCheckChange}
-                />
-                <label htmlFor="Model 2">Model 2</label>
-              </p>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="Model 3"
-                  name="three"
-                  checked={modelFilters.three}
-                  onChange={handleModelCheckChange}
-                />
-                <label htmlFor="Model 3">Model 3</label>
-              </p>
-            </div>
-          )}
-
-          <div
-            className={classes["filter-field"]}
-            onClick={handleExpandSizeFilter}
-          >
-            <span className={classes.title}>SIZE</span>
-            <span className={classes.symbol}>
-              {isSizeFilterExpanded ? <MinusIcon /> : <PlusIcon />}
-            </span>
-          </div>
-          {isSizeFilterExpanded && (
-            <div>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="Size 1"
-                  name="one"
-                  checked={sizeFilters.one}
-                  onChange={handleSizeCheckChange}
-                />
-                <label htmlFor="Size 1">Size 1</label>
-              </p>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="Size 2"
-                  name="two"
-                  checked={sizeFilters.two}
-                  onChange={handleSizeCheckChange}
-                />
-                <label htmlFor="Size 2">Size 2</label>
-              </p>
-              <p className={classes["checkbox-grp"]}>
-                <input
-                  type="checkbox"
-                  id="Size 3"
-                  name="three"
-                  checked={sizeFilters.three}
-                  onChange={handleSizeCheckChange}
-                />
-                <label htmlFor="Size 3">Size 3</label>
-              </p>
-            </div>
-          )}
-        </div>
-      </div> */}
 
       <div className={classes.designs}>
         <div className={classes["head-content"]}>
-        <h1>View All Designs</h1>
-        <section className={classes.filters}>
-          <div className={classes["each-filter"]}>
-            <div
-              className={classes["filter-field"]}
-              onClick={handleExpandMainGrpFilter}
-            >
-              <span className={classes.title}>Main Group</span>
-              <motion.span
-                animate={{ rotate: isMainGrpFilterExpanded ? 180 : 0 }}
-                className={classes.symbol}
+          <h1>View All Designs</h1>
+          <section className={classes.filters}>
+            <div className={classes["each-filter"]}>
+              <div
+                className={classes["filter-field"]}
+                onClick={handleExpandMainGrpFilter}
               >
-                &#9650;
-              </motion.span>
-            </div>
-            {isMainGrpFilterExpanded && (
-              <div className={classes["filter-options"]}>
-                <p className={classes["checkbox-grp"]}>
-                  <input
-                    type="checkbox"
-                    id="diamond"
-                    name="diamond"
-                    checked={mainGrpFilters.diamond}
-                    onChange={handleMainGroupCheckChange}
-                  />
-                  <label htmlFor="diamond">Diamond</label>
-                </p>
-                <p className={classes["checkbox-grp"]}>
-                  <input
-                    type="checkbox"
-                    id="gold"
-                    name="gold"
-                    checked={mainGrpFilters.gold}
-                    onChange={handleMainGroupCheckChange}
-                  />
-                  <label htmlFor="gold">Gold</label>
-                </p>
+                <span className={classes.title}>Main Group</span>
+                <motion.span
+                  animate={{ rotate: isMainGrpFilterExpanded ? 180 : 0 }}
+                  className={classes.symbol}
+                >
+                  &#9650;
+                </motion.span>
               </div>
-            )}
-          </div>
+              {isMainGrpFilterExpanded && (
+                <div className={classes["filter-options"]}>
+                  <p className={classes["checkbox-grp"]}>
+                    <input
+                      type="checkbox"
+                      id="Diamond"
+                      name="Diamond"
+                      checked={mainGrpFilters["Diamond"]}
+                      onChange={handleMainGroupCheckChange}
+                    />
+                    <label htmlFor="Diamond">Diamond</label>
+                  </p>
+                  <p className={classes["checkbox-grp"]}>
+                    <input
+                      type="checkbox"
+                      id="Gold"
+                      name="Gold"
+                      checked={mainGrpFilters["Gold"]}
+                      onChange={handleMainGroupCheckChange}
+                    />
+                    <label htmlFor="Gold">Gold</label>
+                  </p>
+                </div>
+              )}
+            </div>
 
-          <div className={classes["each-filter"]}>
-            <div
-              className={classes["filter-field"]}
-              onClick={handleExpandCategoryFilter}
-            >
-              <span className={classes.title}>CATEGORY</span>
-              <motion.span
-                animate={{ rotate: isCategoryFilterExpanded ? 180 : 0 }}
-                className={classes.symbol}
+            <div className={classes["each-filter"]}>
+              <div
+                className={classes["filter-field"]}
+                onClick={handleExpandCategoryFilter}
               >
-                &#9650;
-              </motion.span>
-            </div>
-            {isCategoryFilterExpanded && (
-              <div className={classes["filter-options"]}>
-                <p className={classes["checkbox-grp"]}>
-                  <input
-                    type="checkbox"
-                    id="Diamond Jewelery"
-                    name="diamondJewelery"
-                    checked={categoryFilters.diamondJewelery}
-                    onChange={handleCategoryCheckChange}
-                  />
-                  <label htmlFor="Diamond Jewelery">Diamond Jewelery</label>
-                </p>
-                <p className={classes["checkbox-grp"]}>
-                  <input
-                    type="checkbox"
-                    id="Gold Jewelery"
-                    name="goldJewelery"
-                    checked={categoryFilters.goldJewelery}
-                    onChange={handleCategoryCheckChange}
-                  />
-                  <label htmlFor="Gold Jewelery">GOLD Jewelery</label>
-                </p>
+                <span className={classes.title}>CATEGORY</span>
+                <motion.span
+                  animate={{ rotate: isCategoryFilterExpanded ? 180 : 0 }}
+                  className={classes.symbol}
+                >
+                  &#9650;
+                </motion.span>
               </div>
-            )}
+              {isCategoryFilterExpanded && (
+                <div className={classes["filter-options"]}>
+                  <p className={classes["checkbox-grp"]}>
+                    <input
+                      type="checkbox"
+                      id="Diamond Jewelery"
+                      name="Diamond Jewelery"
+                      checked={categoryFilters["Diamond Jewelery"]}
+                      onChange={handleCategoryCheckChange}
+                    />
+                    <label htmlFor="Diamond Jewelery">Diamond Jewelery</label>
+                  </p>
+                  <p className={classes["checkbox-grp"]}>
+                    <input
+                      type="checkbox"
+                      id="Gold Jewelery"
+                      name="Gold Jewelery"
+                      checked={categoryFilters["Gold Jewelery"]}
+                      onChange={handleCategoryCheckChange}
+                    />
+                    <label htmlFor="Gold Jewelery">GOLD Jewelery</label>
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className={classes["each-filter"]}>
@@ -1063,8 +739,8 @@ export default function ViewDesign() {
                     <input
                       type="checkbox"
                       id="1"
-                      name="one"
-                      checked={designNumFilters.one}
+                      name="D.No:1"
+                      checked={designNumFilters["D.No:1"]}
                       onChange={handleDesignNumCheckChange}
                     />
                     <label htmlFor="1">1</label>
@@ -1073,8 +749,8 @@ export default function ViewDesign() {
                     <input
                       type="checkbox"
                       id="2"
-                      name="two"
-                      checked={designNumFilters.two}
+                      name="D.No:2"
+                      checked={designNumFilters["D.No:2"]}
                       onChange={handleDesignNumCheckChange}
                     />
                     <label htmlFor="2">2</label>
@@ -1084,52 +760,52 @@ export default function ViewDesign() {
             </div>
 
             <div className={classes["each-filter"]}>
-            <div
-              className={classes["filter-field"]}
-              onClick={handleExpandStyleFilter}
-            >
-              <span className={classes.title}>STYLE</span>
-              <motion.span
+              <div
+                className={classes["filter-field"]}
+                onClick={handleExpandStyleFilter}
+              >
+                <span className={classes.title}>STYLE</span>
+                <motion.span
                   animate={{ rotate: isStyleFilterExpanded ? 180 : 0 }}
                   className={classes.symbol}
                 >
                   &#9650;
                 </motion.span>
-            </div>
-            {isStyleFilterExpanded && (
-              <div className={classes["filter-options"]}>
-                <p className={classes["checkbox-grp"]}>
-                  <input
-                    type="checkbox"
-                    id="Style 1"
-                    name="one"
-                    checked={styleFilters.one}
-                    onChange={handleStyleCheckChange}
-                  />
-                  <label htmlFor="Style 1">Style 1</label>
-                </p>
-                <p className={classes["checkbox-grp"]}>
-                  <input
-                    type="checkbox"
-                    id="Style 2"
-                    name="two"
-                    checked={styleFilters.two}
-                    onChange={handleStyleCheckChange}
-                  />
-                  <label htmlFor="Style 2">Style 2</label>
-                </p>
-                <p className={classes["checkbox-grp"]}>
-                  <input
-                    type="checkbox"
-                    id="Style 3"
-                    name="three"
-                    checked={styleFilters.three}
-                    onChange={handleStyleCheckChange}
-                  />
-                  <label htmlFor="Style 3">Style 3</label>
-                </p>
               </div>
-            )}
+              {isStyleFilterExpanded && (
+                <div className={classes["filter-options"]}>
+                  <p className={classes["checkbox-grp"]}>
+                    <input
+                      type="checkbox"
+                      id="Style 1"
+                      name="Style 1"
+                      checked={styleFilters["Style 1"]}
+                      onChange={handleStyleCheckChange}
+                    />
+                    <label htmlFor="Style 1">Style 1</label>
+                  </p>
+                  <p className={classes["checkbox-grp"]}>
+                    <input
+                      type="checkbox"
+                      id="Style 2"
+                      name="Style 2"
+                      checked={styleFilters["Style 2"]}
+                      onChange={handleStyleCheckChange}
+                    />
+                    <label htmlFor="Style 2">Style 2</label>
+                  </p>
+                  <p className={classes["checkbox-grp"]}>
+                    <input
+                      type="checkbox"
+                      id="Style 3"
+                      name="Style 3"
+                      checked={styleFilters["Style 3"]}
+                      onChange={handleStyleCheckChange}
+                    />
+                    <label htmlFor="Style 3">Style 3</label>
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className={classes["each-filter"]}>
@@ -1139,11 +815,11 @@ export default function ViewDesign() {
               >
                 <span className={classes.title}>PRODUCT</span>
                 <motion.span
-                    animate={{ rotate: isProductFilterExpanded ? 180 : 0 }}
-                    className={classes.symbol}
-                  >
-                    &#9650;
-                  </motion.span>
+                  animate={{ rotate: isProductFilterExpanded ? 180 : 0 }}
+                  className={classes.symbol}
+                >
+                  &#9650;
+                </motion.span>
               </div>
               {isProductFilterExpanded && (
                 <div className={classes["filter-options"]}>
@@ -1151,8 +827,8 @@ export default function ViewDesign() {
                     <input
                       type="checkbox"
                       id="Product 1"
-                      name="one"
-                      checked={productFilters.one}
+                      name="Product 1"
+                      checked={productFilters["Product 1"]}
                       onChange={handleProductCheckChange}
                     />
                     <label htmlFor="Product 1">Product 1</label>
@@ -1161,8 +837,8 @@ export default function ViewDesign() {
                     <input
                       type="checkbox"
                       id="Product 2"
-                      name="two"
-                      checked={productFilters.two}
+                      name="Product 2"
+                      checked={productFilters["Product 2"]}
                       onChange={handleProductCheckChange}
                     />
                     <label htmlFor="Product 2">Product 2</label>
@@ -1171,8 +847,8 @@ export default function ViewDesign() {
                     <input
                       type="checkbox"
                       id="Product 3"
-                      name="three"
-                      checked={productFilters.three}
+                      name="Product 3"
+                      checked={productFilters["Product 3"]}
                       onChange={handleProductCheckChange}
                     />
                     <label htmlFor="Product 3">Product 3</label>
@@ -1188,11 +864,11 @@ export default function ViewDesign() {
               >
                 <span className={classes.title}>Weight Range</span>
                 <motion.span
-                    animate={{ rotate: isWtFilterExpanded ? 180 : 0 }}
-                    className={classes.symbol}
-                  >
-                    &#9650;
-                  </motion.span>
+                  animate={{ rotate: isWtFilterExpanded ? 180 : 0 }}
+                  className={classes.symbol}
+                >
+                  &#9650;
+                </motion.span>
               </div>
               {isWtFilterExpanded && (
                 <div className={classes["filter-options"]}>
@@ -1241,90 +917,101 @@ export default function ViewDesign() {
             </div>
 
             <div className={classes["each-filter"]}>
-                <div
-                  className={classes["filter-field"]}
-                  onClick={handleExpandMoreFilter}
+              <div
+                className={classes["filter-field"]}
+                onClick={handleExpandMoreFilter}
+              >
+                <span className={classes.title}>MORE FILTERS</span>
+                <motion.span
+                  animate={{ rotate: isMoreFilterExpanded ? 180 : 0 }}
+                  className={classes.symbol}
                 >
-                  <span className={classes.title}>MORE FILTERS</span>
-                  <motion.span
-                    animate={{ rotate: isMoreFilterExpanded ? 180 : 0 }}
-                    className={classes.symbol}
-                  >
-                    &#9650;
-                  </motion.span>
-                </div>
-                {isMoreFilterExpanded && (
-                  <div className={classes["filter-options"]}>
-                      <p className={classes.opt}>
-                        Model
-                      </p>
-                    <p className={classes["checkbox-grp"]}>
-                      <input
-                        type="checkbox"
-                        id="Model 1"
-                        name="one"
-                        checked={modelFilters.one}
-                        onChange={handleModelCheckChange}
-                      />
-                      <label htmlFor="Model 1">Model 1</label>
-                    </p>
-                    <p className={classes["checkbox-grp"]}>
-                      <input
-                        type="checkbox"
-                        id="Model 2"
-                        name="two"
-                        checked={modelFilters.two}
-                        onChange={handleModelCheckChange}
-                      />
-                      <label htmlFor="Model 2">Model 2</label>
-                    </p>
-                    <p className={classes["checkbox-grp"]}>
-                      <input
-                        type="checkbox"
-                        id="Model 3"
-                        name="three"
-                        checked={modelFilters.three}
-                        onChange={handleModelCheckChange}
-                      />
-                      <label htmlFor="Model 3">Model 3</label>
-                    </p>
-                    <p className={classes.opt}>Size</p>
+                  &#9650;
+                </motion.span>
+              </div>
+              {isMoreFilterExpanded && (
+                <div className={classes["filter-options"]}>
+                  <p className={classes.opt}>Model</p>
                   <p className={classes["checkbox-grp"]}>
-                  <input
-                    type="checkbox"
-                    id="Size 1"
-                    name="one"
-                    checked={sizeFilters.one}
-                    onChange={handleSizeCheckChange}
-                  />
-                  <label htmlFor="Size 1">Size 1</label>
-                </p>
-                <p className={classes["checkbox-grp"]}>
-                  <input
-                    type="checkbox"
-                    id="Size 2"
-                    name="two"
-                    checked={sizeFilters.two}
-                    onChange={handleSizeCheckChange}
-                  />
-                  <label htmlFor="Size 2">Size 2</label>
-                </p>
-                <p className={classes["checkbox-grp"]}>
-                  <input
-                    type="checkbox"
-                    id="Size 3"
-                    name="three"
-                    checked={sizeFilters.three}
-                    onChange={handleSizeCheckChange}
-                  />
-                  <label htmlFor="Size 3">Size 3</label>
-                </p>
+                    <input
+                      type="checkbox"
+                      id="Model 1"
+                      name="Model 1"
+                      checked={modelFilters["Model 1"]}
+                      onChange={handleModelCheckChange}
+                    />
+                    <label htmlFor="Model 1">Model 1</label>
+                  </p>
+                  <p className={classes["checkbox-grp"]}>
+                    <input
+                      type="checkbox"
+                      id="Model 2"
+                      name="Model 2"
+                      checked={modelFilters["Model 2"]}
+                      onChange={handleModelCheckChange}
+                    />
+                    <label htmlFor="Model 2">Model 2</label>
+                  </p>
+                  <p className={classes["checkbox-grp"]}>
+                    <input
+                      type="checkbox"
+                      id="Model 3"
+                      name="Model 3"
+                      checked={modelFilters["Model 3"]}
+                      onChange={handleModelCheckChange}
+                    />
+                    <label htmlFor="Model 3">Model 3</label>
+                  </p>
+                  <p className={classes.opt}>Size</p>
+                  <p className={classes["checkbox-grp"]}>
+                    <input
+                      type="checkbox"
+                      id="Size 1"
+                      name="Size 1"
+                      checked={sizeFilters["Size 1"]}
+                      onChange={handleSizeCheckChange}
+                    />
+                    <label htmlFor="Size 1">Size 1</label>
+                  </p>
+                  <p className={classes["checkbox-grp"]}>
+                    <input
+                      type="checkbox"
+                      id="Size 2"
+                      name="Size 2"
+                      checked={sizeFilters["Size 2"]}
+                      onChange={handleSizeCheckChange}
+                    />
+                    <label htmlFor="Size 2">Size 2</label>
+                  </p>
+                  <p className={classes["checkbox-grp"]}>
+                    <input
+                      type="checkbox"
+                      id="Size 3"
+                      name="Size 3"
+                      checked={sizeFilters["Size 3"]}
+                      onChange={handleSizeCheckChange}
+                    />
+                    <label htmlFor="Size 3">Size 3</label>
+                  </p>
                 </div>
-                )}
+              )}
             </div>
-        </section>
+          </section>
+          {selectedFilters.length>0 && (
+            <>
+              <ul className={classes["selected-filters"]}>
+                {selectedFilters.map((eachFilter)=>{
+                  return <li key={eachFilter.id} onClick={()=>handleRemoveFilter(eachFilter.id, eachFilter.event)}>
+                    <span>{eachFilter.label}</span>
+                    <WrongIcon/>
+                  </li>
+                })}
+                <span onClick={handleClearAllFilters} className={classes.clear}>Clear All</span>
+              </ul>
+            </>
+          )}
         </div>
-        
+
         <motion.ul
           variants={{
             hidden: { y: -20, opacity: 0 },

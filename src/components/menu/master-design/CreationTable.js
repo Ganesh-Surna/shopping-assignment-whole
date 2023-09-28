@@ -61,7 +61,7 @@ const CreationTable = ({rowDataArr}) => {
       {/* <button onClick={buttonListener}>Push Me</button> */}
 
       {/* On div wrapping Grid a) specify theme CSS Class Class and b) sets Grid size */}
-      <div className="ag-theme-alpine"  style={{width: "100%", height: 200}}>
+      <div className="ag-theme-alpine"  style={{width: "100%", height: 120}}>
 
         <AgGridReact
             // ref={gridRef} // Ref for accessing Grid's API

@@ -2,6 +2,7 @@
     box-sizing: border-box;
 }
 .header{
+    margin-top: 1rem;
     background-color: rgb(112, 112, 129);
     color:white;
     width: 100%;
@@ -150,6 +151,7 @@ legend{
     margin-top: 2rem;
     display: flex;
     gap:1rem;
+    margin-bottom: 2rem;
 }
 .actions button{
     color:white;

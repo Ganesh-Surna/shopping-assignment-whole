@@ -2,8 +2,11 @@ import { Form, Link, NavLink, useRouteLoaderData, useSubmit } from "react-router
 import Logo from "../assets/logo.svg";
 import classes from "./Sidebar.module.css";
 import { motion } from "framer-motion";
+import { useDispatch } from "react-redux";
+import { uiActions } from "../store/ui-slice";
 
 export default function Sidebar() {
+  const dispatch=useDispatch();
   const submit= useSubmit();
   const token= useRouteLoaderData("root");
 
@@ -20,19 +23,19 @@ export default function Sidebar() {
         
         <section className={classes["fields"]}>
         <span className={classes["dashboard-span"]}>DASHBOARD</span>
-          <NavLink to="/" className={({isActive})=>isActive? classes.active : ""} end >
+          <NavLink onClick={()=>dispatch(uiActions.toggleDashboard())} to="/" className={({isActive})=>isActive? classes.active : ""} end >
             <span>Dashboard</span>
           </NavLink>
-          <NavLink to="/master-design" className={({isActive})=>isActive? classes.active : ""}>
+          <NavLink onClick={()=>dispatch(uiActions.toggleDashboard())} to="/master-design" className={({isActive})=>isActive? classes.active : ""}>
             <span>Mater Design</span>
           </NavLink>
-          <NavLink to="/view-designs" className={({isActive})=>isActive? classes.active : ""}>
+          <NavLink onClick={()=>dispatch(uiActions.toggleDashboard())} to="/view-designs" className={({isActive})=>isActive? classes.active : ""}>
             <span>View Designs</span>
           </NavLink>
-          <NavLink to="/order-form" className={({isActive})=>isActive? classes.active : ""}>
+          <NavLink onClick={()=>dispatch(uiActions.toggleDashboard())} to="/order-form" className={({isActive})=>isActive? classes.active : ""}>
             <span>Order Form</span>
           </NavLink>
-          <NavLink to="/customers" className={({isActive})=>isActive? classes.active : ""}>
+          <NavLink onClick={()=>dispatch(uiActions.toggleDashboard())} to="/customers" className={({isActive})=>isActive? classes.active : ""}>
             <span>Customers</span>
           </NavLink>
           <Link onClick={handleLogout}>Logout</Link>
