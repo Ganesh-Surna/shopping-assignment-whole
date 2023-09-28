@@ -1,14 +1,7 @@
 import { useEffect, useState } from "react";
 import classes from "./ViewDesign.module.css";
 import { useRouteLoaderData } from "react-router-dom";
-import { Carousel } from "antd";
-import LikeIcon from "../../../icons/like-icon";
-import CarouselComponent from "./CarouselComponent";
-import Magnify from "./magnify";
 import ReactImageMagnify from "react-image-magnify";
-import MinusIcon from "../../../icons/minus-icon";
-import PlusIcon from "../../../icons/plus-icon";
-import useFilter from "../../../hooks/use-filter";
 import { motion, AnimatePresence } from "framer-motion";
 import useCheck from "../../../hooks/use-check";
 import useInput from "../../../hooks/use-input";
@@ -436,7 +429,7 @@ export default function ViewDesign() {
       };
     });
     dispatch(uiActions.closeFilters());
-    dispatch(uiActions.selectFilter({label:name, id, event:event.target}));
+    dispatch(uiActions.selectFilter({label:name, id, event:event.target, setFn:setMainGrpFilters.bind(this)}));
   }
   function handleCategoryCheckChange(event){
     const { name, checked, id } = event.target;
@@ -448,7 +441,7 @@ export default function ViewDesign() {
       };
     });
     dispatch(uiActions.closeFilters());
-    dispatch(uiActions.selectFilter({label:name, id}));
+    dispatch(uiActions.selectFilter({label:name, id, event:event.target, setFn:setCategoryFilters.bind(this)}));
   }
   function handleDesignNumCheckChange(event){
     const { name, checked, id } = event.target;
@@ -460,7 +453,7 @@ export default function ViewDesign() {
       };
     });
     dispatch(uiActions.closeFilters());
-    dispatch(uiActions.selectFilter({label:name, id}));
+    dispatch(uiActions.selectFilter({label:name, id, event:event.target, setFn:setDesignNumFilters.bind(this)}));
   }
   function handleProductCheckChange(event){
     const { name, checked, id } = event.target;
@@ -472,7 +465,7 @@ export default function ViewDesign() {
       };
     });
     dispatch(uiActions.closeFilters());
-    dispatch(uiActions.selectFilter({label:name, id}));
+    dispatch(uiActions.selectFilter({label:name, id, event:event.target, setFn:setProductFilters.bind(this)}));
   }
   function handleModelCheckChange(event){
     const { name, checked, id } = event.target;
@@ -484,7 +477,7 @@ export default function ViewDesign() {
       };
     });
     dispatch(uiActions.closeFilters());
-    dispatch(uiActions.selectFilter({label:name, id}));
+    dispatch(uiActions.selectFilter({label:name, id, event:event.target, setFn:setModelFilters.bind(this)}));
   }
   function handleStyleCheckChange(event){
     const { name, checked, id } = event.target;
@@ -496,7 +489,7 @@ export default function ViewDesign() {
       };
     });
     dispatch(uiActions.closeFilters());
-    dispatch(uiActions.selectFilter({label:name, id}));
+    dispatch(uiActions.selectFilter({label:name, id, event:event.target, setFn:setStyleFilters.bind(this)}));
   }
   function handleSizeCheckChange(event){
     const { name, checked, id } = event.target;
@@ -508,7 +501,7 @@ export default function ViewDesign() {
       };
     });
     dispatch(uiActions.closeFilters());
-    dispatch(uiActions.selectFilter({label:name, id}));
+    dispatch(uiActions.selectFilter({label:name, id, event:event.target, setFn:setSizeFilters.bind(this)}));
   }
   function handleWtCheckChange(event){
     const { name, checked, id } = event.target;
@@ -520,17 +513,32 @@ export default function ViewDesign() {
       };
     });
     dispatch(uiActions.closeFilters());
-    dispatch(uiActions.selectFilter({label:name, id}));
+    dispatch(uiActions.selectFilter({label:name, id, event:event.target, setFn:setWeightRangeFilters.bind(this)}));
   }
 
-  function handleRemoveFilter(id, event){
+  function handleRemoveFilter(id, event, setFn){
     // const filterOption= document.getElementById(id);
-    console.log(event);
-    event[id]=false;
+    const { name } = event;
+    setFn((prev)=>{
+      return {...prev, [name]:false };
+    })
+    // console.log(event);
+    // console.log(event[id]);
+    // console.log(id1, name, checked);
+    // event[checked]=false;
+    // console.log(id1, name, checked);
+    // event[id]=false;
     dispatch(uiActions.removeFilter(id));
   }
 
   function handleClearAllFilters(){
+    for(let obj of selectedFilters){
+      const { setFn, event } = obj;
+      const { name } = event;
+      setFn((prev)=>{
+        return {...prev, [name]:false };
+      })
+    }
     dispatch(uiActions.clearFilters());
   }
 
@@ -1001,7 +1009,7 @@ export default function ViewDesign() {
             <>
               <ul className={classes["selected-filters"]}>
                 {selectedFilters.map((eachFilter)=>{
-                  return <li key={eachFilter.id} onClick={()=>handleRemoveFilter(eachFilter.id, eachFilter.event)}>
+                  return <li key={eachFilter.id} onClick={()=>handleRemoveFilter(eachFilter.id, eachFilter.event, eachFilter.setFn)}>
                     <span>{eachFilter.label}</span>
                     <WrongIcon/>
                   </li>

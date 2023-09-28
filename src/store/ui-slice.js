@@ -39,7 +39,7 @@ const uiSlice = createSlice({
         }
     },
     selectFilter(state, action){
-        const {label, id, event}= action.payload;
+        const {label, id, event, setFn}= action.payload;
         let existingItem= state.selectedFilters.find((item)=>{
             return item.id===id;
         });
@@ -50,7 +50,7 @@ const uiSlice = createSlice({
             state.selectedFilters.splice(existingItemIndex,1);
         }
         else{
-            state.selectedFilters.unshift({label, id, event});
+            state.selectedFilters.unshift({label, id, event, setFn});
         }
     },
     removeFilter(state, action){
