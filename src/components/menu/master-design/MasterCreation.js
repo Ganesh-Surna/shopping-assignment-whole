@@ -933,7 +933,8 @@ export default function MasterCreation() {
           </div>
         </fieldset>
         <div className={classes.image}>
-          <img src="https://picsum.photos/536/361" alt="Design Image" />
+          <span>No images added.</span>
+          {/* <img src="https://picsum.photos/536/361" alt="Design Image" /> */}
         </div>
       </div>
       </div>

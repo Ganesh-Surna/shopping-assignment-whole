@@ -41,6 +41,7 @@ overflow-y: auto;
     /* height: 100vh; */
     
     align-self: stretch;
+    justify-content: center;
     display: flex;
     align-items: center;
 }
