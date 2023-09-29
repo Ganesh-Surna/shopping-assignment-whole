@@ -405,10 +405,11 @@ export default function MasterCreation() {
   const stone_weight1Classes= `${classes["num-group"]} ${stone_weight1HasErr ? classes["invalid"] : ""}`;
 
   return (
-    <>
+    <main className={classes.container}>
       <header className={classes.header}>
         <p>Master Design Creation</p>
       </header>
+      <div className={classes["below-header"]}>
       <div className={classes.below}>
         <fieldset>
           <legend>Entry Details</legend>
@@ -909,6 +910,7 @@ export default function MasterCreation() {
           <img src="https://picsum.photos/536/361" alt="Design Image" />
         </div>
       </div>
-    </>
+      </div>
+    </main>
   );
 }

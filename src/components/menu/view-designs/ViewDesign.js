@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import classes from "./ViewDesign.module.css";
 import { useRouteLoaderData } from "react-router-dom";
-import ReactImageMagnify from "react-image-magnify";
 import { motion, AnimatePresence } from "framer-motion";
-import useCheck from "../../../hooks/use-check";
-import useInput from "../../../hooks/use-input";
 import { useDispatch, useSelector } from "react-redux";
 import { uiActions } from "../../../store/ui-slice";
 import WrongIcon from "../../../icons/wrong-icon";
+import useCheck from "../../../hooks/use-check";
+import { Drawer } from "antd";
+import DesignDetails from "./DesignDetails";
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -33,10 +33,12 @@ const DUMMY_LIST = [
     component_weight: 150,
     ghat_weight: 160,
     remark: "Remarks description...",
-    image: "https://picsum.photos/536/354",
-    image1: "https://picsum.photos/536/301",
-    image2: "https://picsum.photos/536/302",
-    image3: "https://picsum.photos/536/303",
+    images:[
+      {image: "https://picsum.photos/536/354", isDefault: true},
+      {image: "https://picsum.photos/536/301", isDefault: false},
+      {image: "https://picsum.photos/536/302", isDefault: false},
+      {image: "https://picsum.photos/536/303" , isDefault: false},
+    ]
   },
   {
     id: "d2",
@@ -59,10 +61,12 @@ const DUMMY_LIST = [
     component_weight: 150,
     ghat_weight: 160,
     remark: "Remarks description...",
-    image: "https://picsum.photos/536/355",
-    image1: "https://picsum.photos/536/304",
-    image2: "https://picsum.photos/536/305",
-    image3: "https://picsum.photos/536/306",
+    images:[
+      {image: "https://picsum.photos/536/355", isDefault: true},
+      {image: "https://picsum.photos/536/304", isDefault: false},
+      {image: "https://picsum.photos/536/305", isDefault: false},
+      {image: "https://picsum.photos/536/306" , isDefault: false},
+    ]
   },
   {
     id: "d3",
@@ -85,10 +89,12 @@ const DUMMY_LIST = [
     component_weight: 150,
     ghat_weight: 160,
     remark: "Remarks description...",
-    image: "https://picsum.photos/536/353",
-    image1: "https://picsum.photos/536/307",
-    image2: "https://picsum.photos/536/308",
-    image3: "https://picsum.photos/536/309",
+    images:[
+      {image: "https://picsum.photos/536/353", isDefault: true},
+      {image: "https://picsum.photos/536/307", isDefault: false},
+      {image: "https://picsum.photos/536/308", isDefault: false},
+      {image: "https://picsum.photos/536/309" , isDefault: false},
+    ]
   },
   {
     id: "d4",
@@ -111,10 +117,12 @@ const DUMMY_LIST = [
     component_weight: 150,
     ghat_weight: 160,
     remark: "Remarks description...",
-    image: "https://picsum.photos/536/352",
-    image1: "https://picsum.photos/536/310",
-    image2: "https://picsum.photos/536/311",
-    image3: "https://picsum.photos/536/312",
+    images:[
+      {image: "https://picsum.photos/536/352", isDefault: true},
+      {image: "https://picsum.photos/536/310", isDefault: false},
+      {image: "https://picsum.photos/536/311", isDefault: false},
+      {image: "https://picsum.photos/536/312" , isDefault: false},
+    ]
   },
   {
     id: "d5",
@@ -137,10 +145,12 @@ const DUMMY_LIST = [
     component_weight: 150,
     ghat_weight: 160,
     remark: "Remarks description...",
-    image: "https://picsum.photos/536/351",
-    image1: "https://picsum.photos/536/313",
-    image2: "https://picsum.photos/536/314",
-    image3: "https://picsum.photos/536/315",
+    images:[
+      {image: "https://picsum.photos/536/351", isDefault: true},
+      {image: "https://picsum.photos/536/313", isDefault: false},
+      {image: "https://picsum.photos/536/314", isDefault: false},
+      {image: "https://picsum.photos/536/315" , isDefault: false},
+    ]
   },
   {
     id: "d6",
@@ -163,10 +173,12 @@ const DUMMY_LIST = [
     component_weight: 150,
     ghat_weight: 160,
     remark: "Remarks description...",
-    image: "https://picsum.photos/536/356",
-    image1: "https://picsum.photos/536/316",
-    image2: "https://picsum.photos/536/317",
-    image3: "https://picsum.photos/536/318",
+    images:[
+      {image: "https://picsum.photos/536/356", isDefault: true},
+      {image: "https://picsum.photos/536/316", isDefault: false},
+      {image: "https://picsum.photos/536/317", isDefault: false},
+      {image: "https://picsum.photos/536/318" , isDefault: false},
+    ]
   },
   {
     id: "d7",
@@ -189,10 +201,12 @@ const DUMMY_LIST = [
     component_weight: 150,
     ghat_weight: 160,
     remark: "Remarks description...",
-    image: "https://picsum.photos/536/357",
-    image1: "https://picsum.photos/536/319",
-    image2: "https://picsum.photos/536/320",
-    image3: "https://picsum.photos/536/321",
+    images:[
+      {image: "https://picsum.photos/536/357", isDefault: true},
+      {image: "https://picsum.photos/536/319", isDefault: false},
+      {image: "https://picsum.photos/536/320", isDefault: false},
+      {image: "https://picsum.photos/536/321" , isDefault: false},
+    ]
   },
   {
     id: "d8",
@@ -215,10 +229,12 @@ const DUMMY_LIST = [
     component_weight: 150,
     ghat_weight: 160,
     remark: "Remarks description...",
-    image: "https://picsum.photos/536/358",
-    image1: "https://picsum.photos/536/322",
-    image2: "https://picsum.photos/536/323",
-    image3: "https://picsum.photos/536/324",
+    images:[
+      {image: "https://picsum.photos/536/358", isDefault: true},
+      {image: "https://picsum.photos/536/322", isDefault: false},
+      {image: "https://picsum.photos/536/323", isDefault: false},
+      {image: "https://picsum.photos/536/324" , isDefault: false},
+    ]
   },
   {
     id: "d9",
@@ -241,10 +257,12 @@ const DUMMY_LIST = [
     component_weight: 150,
     ghat_weight: 160,
     remark: "Remarks description...",
-    image: "https://picsum.photos/536/359",
-    image1: "https://picsum.photos/536/325",
-    image2: "https://picsum.photos/536/326",
-    image3: "https://picsum.photos/536/327",
+    images:[
+      {image: "https://picsum.photos/536/359", isDefault: true},
+      {image: "https://picsum.photos/536/325", isDefault: false},
+      {image: "https://picsum.photos/536/326", isDefault: false},
+      {image: "https://picsum.photos/536/327" , isDefault: false},
+    ]
   },
   {
     id: "d10",
@@ -267,10 +285,12 @@ const DUMMY_LIST = [
     component_weight: 150,
     ghat_weight: 160,
     remark: "Remarks description...",
-    image: "https://picsum.photos/536/360",
-    image1: "https://picsum.photos/536/328",
-    image2: "https://picsum.photos/536/329",
-    image3: "https://picsum.photos/536/330",
+    images:[
+      {image: "https://picsum.photos/536/360", isDefault: true},
+      {image: "https://picsum.photos/536/328", isDefault: false},
+      {image: "https://picsum.photos/536/329", isDefault: false},
+      {image: "https://picsum.photos/536/330" , isDefault: false},
+    ]
   },
   {
     id: "d11",
@@ -293,10 +313,12 @@ const DUMMY_LIST = [
     component_weight: 150,
     ghat_weight: 160,
     remark: "Remarks description...",
-    image: "https://picsum.photos/536/361",
-    image1: "https://picsum.photos/536/331",
-    image2: "https://picsum.photos/536/332",
-    image3: "https://picsum.photos/536/333",
+    images:[
+      {image: "https://picsum.photos/536/361", isDefault: true},
+      {image: "https://picsum.photos/536/331", isDefault: false},
+      {image: "https://picsum.photos/536/332", isDefault: false},
+      {image: "https://picsum.photos/536/333" , isDefault: false},
+    ]
   },
   {
     id: "d12",
@@ -319,74 +341,134 @@ const DUMMY_LIST = [
     component_weight: 150,
     ghat_weight: 160,
     remark: "Remarks description...",
-    image: "https://picsum.photos/536/361",
-    image1: "https://picsum.photos/536/331",
-    image2: "https://picsum.photos/536/332",
-    image3: "https://picsum.photos/536/333",
+    images:[
+      {image: "https://picsum.photos/536/362", isDefault: true},
+      {image: "https://picsum.photos/536/334", isDefault: false},
+      {image: "https://picsum.photos/536/335", isDefault: false},
+      {image: "https://picsum.photos/536/336" , isDefault: false},
+    ]
+  },
+  {
+    id: "d13",
+    title: "Design 13",
+    description: "This is the 13th Design.",
+    price: 750,
+    main_group: "Gold",
+    category: "Gold Jewelery",
+    design_number: 1,
+    created_date: today,
+    style: "Style 3",
+    product: "Product 3",
+    model: "Model 3",
+    size: "Size 3",
+    worker: "Worker 1",
+    pieces: 1,
+    gross_weight: 100,
+    stone_weight: 100,
+    net_weight: 100,
+    component_weight: 100,
+    ghat_weight: 100,
+    remark: "Remarks description...",
+    images:[
+      {image: "https://picsum.photos/536/363", isDefault: true},
+      {image: "https://picsum.photos/536/337", isDefault: false},
+      {image: "https://picsum.photos/536/338", isDefault: false},
+      {image: "https://picsum.photos/536/339" , isDefault: false},
+    ]
   },
 ];
 
-
 export default function ViewDesign() {
   const token = useRouteLoaderData("root");
-  const dispatch= useDispatch();
+  const dispatch = useDispatch();
 
-  const selectedFilters= useSelector(state=>state.ui.selectedFilters);
+  const [isDrawerOPen, setIsDrawerOPen]= useState(false);
 
-  const [mainGrpFilters, setMainGrpFilters]= useState({
-    "Gold": false,
-    "Diamond": false,
-  });
-  const [categoryFilters, setCategoryFilters]= useState({
+  const selectedFilters = useSelector((state) => state.ui.selectedFilters);
+
+  const {
+    field: mainGrpFilters,
+    handleFieldCheckChange: handleMainGroupCheckChange,
+  } = useCheck({
+    Gold: false,
+    Diamond: false,
+  }, handleCloseFilters);
+
+  const {
+    field: categoryFilters,
+    handleFieldCheckChange: handleCategoryCheckChange,
+  } = useCheck({
     "Gold Jewelery": false,
     "Diamond Jewelery": false,
-  });
-  const [designNumFilters, setDesignNumFilters]= useState({
+  }, handleCloseFilters);
+
+  const {
+    field: designNumFilters,
+    handleFieldCheckChange: handleDesignNumCheckChange,
+  } = useCheck({
     "D.No:1": false,
     "D.No:2": false,
-  });
-  const [styleFilters, setStyleFilters]= useState({
+  }, handleCloseFilters);
+
+  const {
+    field: styleFilters,
+    handleFieldCheckChange: handleStyleCheckChange,
+  } = useCheck({
     "Style 1": false,
     "Style 2": false,
     "Style 3": false,
-  });
-  const [productFilters, setProductFilters]= useState({
+  }, handleCloseFilters);
+
+  const {
+    field: productFilters,
+    handleFieldCheckChange: handleProductCheckChange,
+  } = useCheck({
     "Product 1": false,
     "Product 2": false,
     "Product 3": false,
-  });
-  const [weightRangeFilters, setWeightRangeFilters]= useState({
+  }, handleCloseFilters);
+
+  const {
+    field: modelFilters,
+    handleFieldCheckChange: handleModelCheckChange,
+  } = useCheck({
+    "Model 1": false,
+    "Model 2": false,
+    "Model 3": false,
+  }, handleCloseFilters);
+
+  const { field: sizeFilters, handleFieldCheckChange: handleSizeCheckChange } =
+    useCheck({
+      "Size 1": false,
+      "Size 2": false,
+      "Size 3": false,
+    }, handleCloseFilters);
+
+  const {
+    field: weightRangeFilters,
+    handleFieldCheckChange: handleWtCheckChange,
+  } = useCheck({
     "0-10grms": false,
     "10-20grms": false,
     "20-50grms": false,
     "50-100grms": false,
-  });
-  const [modelFilters, setModelFilters]= useState({
-    "Model 1": false,
-    "Model 2": false,
-    "Model 3": false,
-  });
-  const [sizeFilters, setSizeFilters]= useState({
-    "Size 1": false,
-    "Size 2": false,
-    "Size 3": false,
-  });
+  }, handleCloseFilters);
 
   const {
-    "mainGrpFilter": isMainGrpFilterExpanded,
-    "categoryFilter": isCategoryFilterExpanded,
-    "designFilter": isDesignFilterExpanded,
-    "styleFilter": isStyleFilterExpanded,
-    "productFilter": isProductFilterExpanded,
-    "wtFilter": isWtFilterExpanded,
-    "moreFilter": isMoreFilterExpanded,
+    mainGrpFilter: isMainGrpFilterExpanded,
+    categoryFilter: isCategoryFilterExpanded,
+    designFilter: isDesignFilterExpanded,
+    styleFilter: isStyleFilterExpanded,
+    productFilter: isProductFilterExpanded,
+    wtFilter: isWtFilterExpanded,
+    moreFilter: isMoreFilterExpanded,
   } = useSelector((state) => state.ui.filters);
 
   const [isShow, setIsShow] = useState(false);
   const [cardItem, setCardItem] = useState(null);
 
-
   function handleShowDetails(item) {
+    console.log(item);
     setCardItem(item);
     setIsShow(true);
   }
@@ -394,134 +476,34 @@ export default function ViewDesign() {
     setIsShow(false);
   }
 
-  function handleExpandMainGrpFilter(){
+  function handleExpandMainGrpFilter() {
     dispatch(uiActions.expandFilter("mainGrpFilter"));
   }
-  function handleExpandCategoryFilter(){
+  function handleExpandCategoryFilter() {
     dispatch(uiActions.expandFilter("categoryFilter"));
   }
-  function handleExpandDesignFilter(){
+  function handleExpandDesignFilter() {
     dispatch(uiActions.expandFilter("designFilter"));
   }
-  function handleExpandMoreFilter(){
+  function handleExpandMoreFilter() {
     dispatch(uiActions.expandFilter("moreFilter"));
   }
-  function handleExpandProductFilter(){
+  function handleExpandProductFilter() {
     dispatch(uiActions.expandFilter("productFilter"));
   }
-  function handleExpandStyleFilter(){
+  function handleExpandStyleFilter() {
     dispatch(uiActions.expandFilter("styleFilter"));
   }
-  function handleExpandWtFilter(){
+  function handleExpandWtFilter() {
     dispatch(uiActions.expandFilter("wtFilter"));
   }
 
-
-  function handleMainGroupCheckChange(event){
-    const { name, checked, id } = event.target;
-    console.log(event.target);
-    console.log(name, checked, id);
-
-    setMainGrpFilters((prev) => {
-      return {
-        ...prev,
-        [name]: checked,
-      };
-    });
-    dispatch(uiActions.closeFilters());
-    dispatch(uiActions.selectFilter({label:name, id, event:event.target, setFn:setMainGrpFilters.bind(this)}));
-  }
-  function handleCategoryCheckChange(event){
-    const { name, checked, id } = event.target;
-
-    setCategoryFilters((prev) => {
-      return {
-        ...prev,
-        [name]: checked,
-      };
-    });
-    dispatch(uiActions.closeFilters());
-    dispatch(uiActions.selectFilter({label:name, id, event:event.target, setFn:setCategoryFilters.bind(this)}));
-  }
-  function handleDesignNumCheckChange(event){
-    const { name, checked, id } = event.target;
-
-    setDesignNumFilters((prev) => {
-      return {
-        ...prev,
-        [name]: checked,
-      };
-    });
-    dispatch(uiActions.closeFilters());
-    dispatch(uiActions.selectFilter({label:name, id, event:event.target, setFn:setDesignNumFilters.bind(this)}));
-  }
-  function handleProductCheckChange(event){
-    const { name, checked, id } = event.target;
-
-    setProductFilters((prev) => {
-      return {
-        ...prev,
-        [name]: checked,
-      };
-    });
-    dispatch(uiActions.closeFilters());
-    dispatch(uiActions.selectFilter({label:name, id, event:event.target, setFn:setProductFilters.bind(this)}));
-  }
-  function handleModelCheckChange(event){
-    const { name, checked, id } = event.target;
-
-    setModelFilters((prev) => {
-      return {
-        ...prev,
-        [name]: checked,
-      };
-    });
-    dispatch(uiActions.closeFilters());
-    dispatch(uiActions.selectFilter({label:name, id, event:event.target, setFn:setModelFilters.bind(this)}));
-  }
-  function handleStyleCheckChange(event){
-    const { name, checked, id } = event.target;
-
-    setStyleFilters((prev) => {
-      return {
-        ...prev,
-        [name]: checked,
-      };
-    });
-    dispatch(uiActions.closeFilters());
-    dispatch(uiActions.selectFilter({label:name, id, event:event.target, setFn:setStyleFilters.bind(this)}));
-  }
-  function handleSizeCheckChange(event){
-    const { name, checked, id } = event.target;
-
-    setSizeFilters((prev) => {
-      return {
-        ...prev,
-        [name]: checked,
-      };
-    });
-    dispatch(uiActions.closeFilters());
-    dispatch(uiActions.selectFilter({label:name, id, event:event.target, setFn:setSizeFilters.bind(this)}));
-  }
-  function handleWtCheckChange(event){
-    const { name, checked, id } = event.target;
-
-    setWeightRangeFilters((prev) => {
-      return {
-        ...prev,
-        [name]: checked,
-      };
-    });
-    dispatch(uiActions.closeFilters());
-    dispatch(uiActions.selectFilter({label:name, id, event:event.target, setFn:setWeightRangeFilters.bind(this)}));
-  }
-
-  function handleRemoveFilter(id, event, setFn){
+  function handleRemoveFilter(id, event, setFn) {
     // const filterOption= document.getElementById(id);
     const { name } = event;
-    setFn((prev)=>{
-      return {...prev, [name]:false };
-    })
+    setFn((prev) => {
+      return { ...prev, [name]: false };
+    });
     // console.log(event);
     // console.log(event[id]);
     // console.log(id1, name, checked);
@@ -531,19 +513,26 @@ export default function ViewDesign() {
     dispatch(uiActions.removeFilter(id));
   }
 
-  function handleClearAllFilters(){
-    for(let obj of selectedFilters){
+  function handleClearAllFilters() {
+    for (let obj of selectedFilters) {
       const { setFn, event } = obj;
       const { name } = event;
-      setFn((prev)=>{
-        return {...prev, [name]:false };
-      })
+      setFn((prev) => {
+        return { ...prev, [name]: false };
+      });
     }
     dispatch(uiActions.clearFilters());
   }
 
   console.log(selectedFilters);
 
+  function handleOpenFilters() {
+    setIsDrawerOPen(true);
+  }
+
+  function handleCloseFilters(){
+    setIsDrawerOPen(false);
+  }
 
   let filteredList = DUMMY_LIST.filter((item) => {
     if (mainGrpFilters["Diamond"] && item.main_group === "Diamond") {
@@ -642,13 +631,423 @@ export default function ViewDesign() {
     filteredList = DUMMY_LIST;
   }
 
-
   let content = (
     <div key="whole-designs" className={classes["whole-designs-page"]}>
-
       <div className={classes.designs}>
         <div className={classes["head-content"]}>
           <h1>View All Designs</h1>
+          <section className={classes["filters-sm"]}>
+            <button onClick={handleOpenFilters}>Filter By</button>
+            <Drawer title="Filter By" placement="bottom" height={"90vh"} onClose={handleCloseFilters} open={isDrawerOPen}>
+              <section className={classes["drawer-filters"]}>
+                    <div className={classes["drawer-each-filter"]}>
+                      <div
+                        className={classes["drawer-filter-field"]}
+                        onClick={handleExpandMainGrpFilter}
+                      >
+                        <span className={classes.title}>Main Group</span>
+                        <motion.span
+                          animate={{ rotate: isMainGrpFilterExpanded ? 180 : 0 }}
+                          className={classes.symbol}
+                        >
+                          &#9650;
+                        </motion.span>
+                      </div>
+                      <AnimatePresence>
+                        {isMainGrpFilterExpanded && (
+                          <motion.div
+                            initial={{ y: -20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: -20, opacity: 0 }}
+                            className={classes["drawer-filter-options"]}
+                          >
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="Diamond"
+                                name="Diamond"
+                                checked={mainGrpFilters["Diamond"]}
+                                onChange={handleMainGroupCheckChange}
+                              />
+                              <label htmlFor="Diamond">Diamond</label>
+                            </p>
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="Gold"
+                                name="Gold"
+                                checked={mainGrpFilters["Gold"]}
+                                onChange={handleMainGroupCheckChange}
+                              />
+                              <label htmlFor="Gold">Gold</label>
+                            </p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
+                    <div className={classes["drawer-each-filter"]}>
+                      <div
+                        className={classes["drawer-filter-field"]}
+                        onClick={handleExpandCategoryFilter}
+                      >
+                        <span className={classes.title}>CATEGORY</span>
+                        <motion.span
+                          animate={{ rotate: isCategoryFilterExpanded ? 180 : 0 }}
+                          className={classes.symbol}
+                        >
+                          &#9650;
+                        </motion.span>
+                      </div>
+                      <AnimatePresence>
+                        {isCategoryFilterExpanded && (
+                          <motion.div
+                            initial={{ y: -20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: -20, opacity: 0 }}
+                            className={classes["drawer-filter-options"]}
+                          >
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="Diamond Jewelery"
+                                name="Diamond Jewelery"
+                                checked={categoryFilters["Diamond Jewelery"]}
+                                onChange={handleCategoryCheckChange}
+                              />
+                              <label htmlFor="Diamond Jewelery">Diamond Jewelery</label>
+                            </p>
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="Gold Jewelery"
+                                name="Gold Jewelery"
+                                checked={categoryFilters["Gold Jewelery"]}
+                                onChange={handleCategoryCheckChange}
+                              />
+                              <label htmlFor="Gold Jewelery">GOLD Jewelery</label>
+                            </p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
+                    <div className={classes["drawer-each-filter"]}>
+                      <div
+                        className={classes["drawer-filter-field"]}
+                        onClick={handleExpandDesignFilter}
+                      >
+                        <span className={classes.title}>DESIGN NO.</span>
+                        <motion.span
+                          animate={{ rotate: isDesignFilterExpanded ? 180 : 0 }}
+                          className={classes.symbol}
+                        >
+                          &#9650;
+                        </motion.span>
+                      </div>
+                      <AnimatePresence>
+                        {isDesignFilterExpanded && (
+                          <motion.div
+                            initial={{ y: -20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: -20, opacity: 0 }}
+                            className={classes["drawer-filter-options"]}
+                          >
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="1"
+                                name="D.No:1"
+                                checked={designNumFilters["D.No:1"]}
+                                onChange={handleDesignNumCheckChange}
+                              />
+                              <label htmlFor="1">1</label>
+                            </p>
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="2"
+                                name="D.No:2"
+                                checked={designNumFilters["D.No:2"]}
+                                onChange={handleDesignNumCheckChange}
+                              />
+                              <label htmlFor="2">2</label>
+                            </p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
+                    <div className={classes["drawer-each-filter"]}>
+                      <div
+                        className={classes["drawer-filter-field"]}
+                        onClick={handleExpandStyleFilter}
+                      >
+                        <span className={classes.title}>STYLE</span>
+                        <motion.span
+                          animate={{ rotate: isStyleFilterExpanded ? 180 : 0 }}
+                          className={classes.symbol}
+                        >
+                          &#9650;
+                        </motion.span>
+                      </div>
+                      <AnimatePresence>
+                        {isStyleFilterExpanded && (
+                          <motion.div
+                            initial={{ y: -20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: -20, opacity: 0 }}
+                            className={classes["drawer-filter-options"]}
+                          >
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="Style 1"
+                                name="Style 1"
+                                checked={styleFilters["Style 1"]}
+                                onChange={handleStyleCheckChange}
+                              />
+                              <label htmlFor="Style 1">Style 1</label>
+                            </p>
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="Style 2"
+                                name="Style 2"
+                                checked={styleFilters["Style 2"]}
+                                onChange={handleStyleCheckChange}
+                              />
+                              <label htmlFor="Style 2">Style 2</label>
+                            </p>
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="Style 3"
+                                name="Style 3"
+                                checked={styleFilters["Style 3"]}
+                                onChange={handleStyleCheckChange}
+                              />
+                              <label htmlFor="Style 3">Style 3</label>
+                            </p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
+                    <div className={classes["drawer-each-filter"]}>
+                      <div
+                        className={classes["drawer-filter-field"]}
+                        onClick={handleExpandProductFilter}
+                      >
+                        <span className={classes.title}>PRODUCT</span>
+                        <motion.span
+                          animate={{ rotate: isProductFilterExpanded ? 180 : 0 }}
+                          className={classes.symbol}
+                        >
+                          &#9650;
+                        </motion.span>
+                      </div>
+                      <AnimatePresence>
+                        {isProductFilterExpanded && (
+                          <motion.div
+                            initial={{ y: -20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: -20, opacity: 0 }}
+                            className={classes["drawer-filter-options"]}
+                          >
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="Product 1"
+                                name="Product 1"
+                                checked={productFilters["Product 1"]}
+                                onChange={handleProductCheckChange}
+                              />
+                              <label htmlFor="Product 1">Product 1</label>
+                            </p>
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="Product 2"
+                                name="Product 2"
+                                checked={productFilters["Product 2"]}
+                                onChange={handleProductCheckChange}
+                              />
+                              <label htmlFor="Product 2">Product 2</label>
+                            </p>
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="Product 3"
+                                name="Product 3"
+                                checked={productFilters["Product 3"]}
+                                onChange={handleProductCheckChange}
+                              />
+                              <label htmlFor="Product 3">Product 3</label>
+                            </p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
+                    <div className={classes["drawer-each-filter"]}>
+                      <div
+                        className={classes["drawer-filter-field"]}
+                        onClick={handleExpandWtFilter}
+                      >
+                        <span className={classes.title}>Weight Range</span>
+                        <motion.span
+                          animate={{ rotate: isWtFilterExpanded ? 180 : 0 }}
+                          className={classes.symbol}
+                        >
+                          &#9650;
+                        </motion.span>
+                      </div>
+                      <AnimatePresence>
+                        {isWtFilterExpanded && (
+                          <motion.div
+                            initial={{ y: -20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: -20, opacity: 0 }}
+                            className={classes["drawer-filter-options"]}
+                          >
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="wt 1"
+                                name="0-10grms"
+                                checked={weightRangeFilters["0-10grms"]}
+                                onChange={handleWtCheckChange}
+                              />
+                              <label htmlFor="wt 1">0-10grms</label>
+                            </p>
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="wt 2"
+                                name="10-20grms"
+                                checked={weightRangeFilters["10-20grms"]}
+                                onChange={handleWtCheckChange}
+                              />
+                              <label htmlFor="wt 2">10-20grms</label>
+                            </p>
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="wt 3"
+                                name="20-50grms"
+                                checked={weightRangeFilters["20-50grms"]}
+                                onChange={handleWtCheckChange}
+                              />
+                              <label htmlFor="wt 3">20-50grms</label>
+                            </p>
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="wt 4"
+                                name="50-100grms"
+                                checked={weightRangeFilters["50-100grms"]}
+                                onChange={handleWtCheckChange}
+                              />
+                              <label htmlFor="wt 4">50-100grms</label>
+                            </p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
+                    <div className={classes["drawer-each-filter"]}>
+                      <div
+                        className={classes["drawer-filter-field"]}
+                        onClick={handleExpandMoreFilter}
+                      >
+                        <span className={classes.title}>MORE FILTERS</span>
+                        <motion.span
+                          animate={{ rotate: isMoreFilterExpanded ? 180 : 0 }}
+                          className={classes.symbol}
+                        >
+                          &#9650;
+                        </motion.span>
+                      </div>
+                      <AnimatePresence>
+                        {isMoreFilterExpanded && (
+                          <motion.div
+                            initial={{ y: -20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: -20, opacity: 0 }}
+                            className={classes["drawer-filter-options"]}
+                          >
+                            <p className={classes.opt}>Model</p>
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="Model 1"
+                                name="Model 1"
+                                checked={modelFilters["Model 1"]}
+                                onChange={handleModelCheckChange}
+                              />
+                              <label htmlFor="Model 1">Model 1</label>
+                            </p>
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="Model 2"
+                                name="Model 2"
+                                checked={modelFilters["Model 2"]}
+                                onChange={handleModelCheckChange}
+                              />
+                              <label htmlFor="Model 2">Model 2</label>
+                            </p>
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="Model 3"
+                                name="Model 3"
+                                checked={modelFilters["Model 3"]}
+                                onChange={handleModelCheckChange}
+                              />
+                              <label htmlFor="Model 3">Model 3</label>
+                            </p>
+                            <p className={classes.opt}>Size</p>
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="Size 1"
+                                name="Size 1"
+                                checked={sizeFilters["Size 1"]}
+                                onChange={handleSizeCheckChange}
+                              />
+                              <label htmlFor="Size 1">Size 1</label>
+                            </p>
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="Size 2"
+                                name="Size 2"
+                                checked={sizeFilters["Size 2"]}
+                                onChange={handleSizeCheckChange}
+                              />
+                              <label htmlFor="Size 2">Size 2</label>
+                            </p>
+                            <p className={classes["checkbox-grp"]}>
+                              <input
+                                type="checkbox"
+                                id="Size 3"
+                                name="Size 3"
+                                checked={sizeFilters["Size 3"]}
+                                onChange={handleSizeCheckChange}
+                              />
+                              <label htmlFor="Size 3">Size 3</label>
+                            </p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+              </section>
+            </Drawer>
+          </section>
+
+
           <section className={classes.filters}>
             <div className={classes["each-filter"]}>
               <div
@@ -663,30 +1062,37 @@ export default function ViewDesign() {
                   &#9650;
                 </motion.span>
               </div>
-              {isMainGrpFilterExpanded && (
-                <div className={classes["filter-options"]}>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="Diamond"
-                      name="Diamond"
-                      checked={mainGrpFilters["Diamond"]}
-                      onChange={handleMainGroupCheckChange}
-                    />
-                    <label htmlFor="Diamond">Diamond</label>
-                  </p>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="Gold"
-                      name="Gold"
-                      checked={mainGrpFilters["Gold"]}
-                      onChange={handleMainGroupCheckChange}
-                    />
-                    <label htmlFor="Gold">Gold</label>
-                  </p>
-                </div>
-              )}
+              <AnimatePresence>
+                {isMainGrpFilterExpanded && (
+                  <motion.div
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    className={classes["filter-options"]}
+                  >
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="Diamond"
+                        name="Diamond"
+                        checked={mainGrpFilters["Diamond"]}
+                        onChange={handleMainGroupCheckChange}
+                      />
+                      <label htmlFor="Diamond">Diamond</label>
+                    </p>
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="Gold"
+                        name="Gold"
+                        checked={mainGrpFilters["Gold"]}
+                        onChange={handleMainGroupCheckChange}
+                      />
+                      <label htmlFor="Gold">Gold</label>
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div className={classes["each-filter"]}>
@@ -702,30 +1108,37 @@ export default function ViewDesign() {
                   &#9650;
                 </motion.span>
               </div>
-              {isCategoryFilterExpanded && (
-                <div className={classes["filter-options"]}>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="Diamond Jewelery"
-                      name="Diamond Jewelery"
-                      checked={categoryFilters["Diamond Jewelery"]}
-                      onChange={handleCategoryCheckChange}
-                    />
-                    <label htmlFor="Diamond Jewelery">Diamond Jewelery</label>
-                  </p>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="Gold Jewelery"
-                      name="Gold Jewelery"
-                      checked={categoryFilters["Gold Jewelery"]}
-                      onChange={handleCategoryCheckChange}
-                    />
-                    <label htmlFor="Gold Jewelery">GOLD Jewelery</label>
-                  </p>
-                </div>
-              )}
+              <AnimatePresence>
+                {isCategoryFilterExpanded && (
+                  <motion.div
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    className={classes["filter-options"]}
+                  >
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="Diamond Jewelery"
+                        name="Diamond Jewelery"
+                        checked={categoryFilters["Diamond Jewelery"]}
+                        onChange={handleCategoryCheckChange}
+                      />
+                      <label htmlFor="Diamond Jewelery">Diamond Jewelery</label>
+                    </p>
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="Gold Jewelery"
+                        name="Gold Jewelery"
+                        checked={categoryFilters["Gold Jewelery"]}
+                        onChange={handleCategoryCheckChange}
+                      />
+                      <label htmlFor="Gold Jewelery">GOLD Jewelery</label>
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div className={classes["each-filter"]}>
@@ -741,30 +1154,37 @@ export default function ViewDesign() {
                   &#9650;
                 </motion.span>
               </div>
-              {isDesignFilterExpanded && (
-                <div className={classes["filter-options"]}>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="1"
-                      name="D.No:1"
-                      checked={designNumFilters["D.No:1"]}
-                      onChange={handleDesignNumCheckChange}
-                    />
-                    <label htmlFor="1">1</label>
-                  </p>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="2"
-                      name="D.No:2"
-                      checked={designNumFilters["D.No:2"]}
-                      onChange={handleDesignNumCheckChange}
-                    />
-                    <label htmlFor="2">2</label>
-                  </p>
-                </div>
-              )}
+              <AnimatePresence>
+                {isDesignFilterExpanded && (
+                  <motion.div
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    className={classes["filter-options"]}
+                  >
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="1"
+                        name="D.No:1"
+                        checked={designNumFilters["D.No:1"]}
+                        onChange={handleDesignNumCheckChange}
+                      />
+                      <label htmlFor="1">1</label>
+                    </p>
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="2"
+                        name="D.No:2"
+                        checked={designNumFilters["D.No:2"]}
+                        onChange={handleDesignNumCheckChange}
+                      />
+                      <label htmlFor="2">2</label>
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div className={classes["each-filter"]}>
@@ -780,40 +1200,47 @@ export default function ViewDesign() {
                   &#9650;
                 </motion.span>
               </div>
-              {isStyleFilterExpanded && (
-                <div className={classes["filter-options"]}>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="Style 1"
-                      name="Style 1"
-                      checked={styleFilters["Style 1"]}
-                      onChange={handleStyleCheckChange}
-                    />
-                    <label htmlFor="Style 1">Style 1</label>
-                  </p>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="Style 2"
-                      name="Style 2"
-                      checked={styleFilters["Style 2"]}
-                      onChange={handleStyleCheckChange}
-                    />
-                    <label htmlFor="Style 2">Style 2</label>
-                  </p>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="Style 3"
-                      name="Style 3"
-                      checked={styleFilters["Style 3"]}
-                      onChange={handleStyleCheckChange}
-                    />
-                    <label htmlFor="Style 3">Style 3</label>
-                  </p>
-                </div>
-              )}
+              <AnimatePresence>
+                {isStyleFilterExpanded && (
+                  <motion.div
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    className={classes["filter-options"]}
+                  >
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="Style 1"
+                        name="Style 1"
+                        checked={styleFilters["Style 1"]}
+                        onChange={handleStyleCheckChange}
+                      />
+                      <label htmlFor="Style 1">Style 1</label>
+                    </p>
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="Style 2"
+                        name="Style 2"
+                        checked={styleFilters["Style 2"]}
+                        onChange={handleStyleCheckChange}
+                      />
+                      <label htmlFor="Style 2">Style 2</label>
+                    </p>
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="Style 3"
+                        name="Style 3"
+                        checked={styleFilters["Style 3"]}
+                        onChange={handleStyleCheckChange}
+                      />
+                      <label htmlFor="Style 3">Style 3</label>
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div className={classes["each-filter"]}>
@@ -829,40 +1256,47 @@ export default function ViewDesign() {
                   &#9650;
                 </motion.span>
               </div>
-              {isProductFilterExpanded && (
-                <div className={classes["filter-options"]}>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="Product 1"
-                      name="Product 1"
-                      checked={productFilters["Product 1"]}
-                      onChange={handleProductCheckChange}
-                    />
-                    <label htmlFor="Product 1">Product 1</label>
-                  </p>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="Product 2"
-                      name="Product 2"
-                      checked={productFilters["Product 2"]}
-                      onChange={handleProductCheckChange}
-                    />
-                    <label htmlFor="Product 2">Product 2</label>
-                  </p>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="Product 3"
-                      name="Product 3"
-                      checked={productFilters["Product 3"]}
-                      onChange={handleProductCheckChange}
-                    />
-                    <label htmlFor="Product 3">Product 3</label>
-                  </p>
-                </div>
-              )}
+              <AnimatePresence>
+                {isProductFilterExpanded && (
+                  <motion.div
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    className={classes["filter-options"]}
+                  >
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="Product 1"
+                        name="Product 1"
+                        checked={productFilters["Product 1"]}
+                        onChange={handleProductCheckChange}
+                      />
+                      <label htmlFor="Product 1">Product 1</label>
+                    </p>
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="Product 2"
+                        name="Product 2"
+                        checked={productFilters["Product 2"]}
+                        onChange={handleProductCheckChange}
+                      />
+                      <label htmlFor="Product 2">Product 2</label>
+                    </p>
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="Product 3"
+                        name="Product 3"
+                        checked={productFilters["Product 3"]}
+                        onChange={handleProductCheckChange}
+                      />
+                      <label htmlFor="Product 3">Product 3</label>
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div className={classes["each-filter"]}>
@@ -878,50 +1312,57 @@ export default function ViewDesign() {
                   &#9650;
                 </motion.span>
               </div>
-              {isWtFilterExpanded && (
-                <div className={classes["filter-options"]}>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="wt 1"
-                      name="0-10grms"
-                      checked={weightRangeFilters["0-10grms"]}
-                      onChange={handleWtCheckChange}
-                    />
-                    <label htmlFor="wt 1">0-10grms</label>
-                  </p>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="wt 2"
-                      name="10-20grms"
-                      checked={weightRangeFilters["10-20grms"]}
-                      onChange={handleWtCheckChange}
-                    />
-                    <label htmlFor="wt 2">10-20grms</label>
-                  </p>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="wt 3"
-                      name="20-50grms"
-                      checked={weightRangeFilters["20-50grms"]}
-                      onChange={handleWtCheckChange}
-                    />
-                    <label htmlFor="wt 3">20-50grms</label>
-                  </p>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="wt 4"
-                      name="50-100grms"
-                      checked={weightRangeFilters["50-100grms"]}
-                      onChange={handleWtCheckChange}
-                    />
-                    <label htmlFor="wt 4">50-100grms</label>
-                  </p>
-                </div>
-              )}
+              <AnimatePresence>
+                {isWtFilterExpanded && (
+                  <motion.div
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    className={classes["filter-options"]}
+                  >
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="wt 1"
+                        name="0-10grms"
+                        checked={weightRangeFilters["0-10grms"]}
+                        onChange={handleWtCheckChange}
+                      />
+                      <label htmlFor="wt 1">0-10grms</label>
+                    </p>
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="wt 2"
+                        name="10-20grms"
+                        checked={weightRangeFilters["10-20grms"]}
+                        onChange={handleWtCheckChange}
+                      />
+                      <label htmlFor="wt 2">10-20grms</label>
+                    </p>
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="wt 3"
+                        name="20-50grms"
+                        checked={weightRangeFilters["20-50grms"]}
+                        onChange={handleWtCheckChange}
+                      />
+                      <label htmlFor="wt 3">20-50grms</label>
+                    </p>
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="wt 4"
+                        name="50-100grms"
+                        checked={weightRangeFilters["50-100grms"]}
+                        onChange={handleWtCheckChange}
+                      />
+                      <label htmlFor="wt 4">50-100grms</label>
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div className={classes["each-filter"]}>
@@ -937,87 +1378,112 @@ export default function ViewDesign() {
                   &#9650;
                 </motion.span>
               </div>
-              {isMoreFilterExpanded && (
-                <div className={classes["filter-options"]}>
-                  <p className={classes.opt}>Model</p>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="Model 1"
-                      name="Model 1"
-                      checked={modelFilters["Model 1"]}
-                      onChange={handleModelCheckChange}
-                    />
-                    <label htmlFor="Model 1">Model 1</label>
-                  </p>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="Model 2"
-                      name="Model 2"
-                      checked={modelFilters["Model 2"]}
-                      onChange={handleModelCheckChange}
-                    />
-                    <label htmlFor="Model 2">Model 2</label>
-                  </p>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="Model 3"
-                      name="Model 3"
-                      checked={modelFilters["Model 3"]}
-                      onChange={handleModelCheckChange}
-                    />
-                    <label htmlFor="Model 3">Model 3</label>
-                  </p>
-                  <p className={classes.opt}>Size</p>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="Size 1"
-                      name="Size 1"
-                      checked={sizeFilters["Size 1"]}
-                      onChange={handleSizeCheckChange}
-                    />
-                    <label htmlFor="Size 1">Size 1</label>
-                  </p>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="Size 2"
-                      name="Size 2"
-                      checked={sizeFilters["Size 2"]}
-                      onChange={handleSizeCheckChange}
-                    />
-                    <label htmlFor="Size 2">Size 2</label>
-                  </p>
-                  <p className={classes["checkbox-grp"]}>
-                    <input
-                      type="checkbox"
-                      id="Size 3"
-                      name="Size 3"
-                      checked={sizeFilters["Size 3"]}
-                      onChange={handleSizeCheckChange}
-                    />
-                    <label htmlFor="Size 3">Size 3</label>
-                  </p>
-                </div>
-              )}
+              <AnimatePresence>
+                {isMoreFilterExpanded && (
+                  <motion.div
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    className={classes["filter-options"]}
+                  >
+                    <p className={classes.opt}>Model</p>
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="Model 1"
+                        name="Model 1"
+                        checked={modelFilters["Model 1"]}
+                        onChange={handleModelCheckChange}
+                      />
+                      <label htmlFor="Model 1">Model 1</label>
+                    </p>
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="Model 2"
+                        name="Model 2"
+                        checked={modelFilters["Model 2"]}
+                        onChange={handleModelCheckChange}
+                      />
+                      <label htmlFor="Model 2">Model 2</label>
+                    </p>
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="Model 3"
+                        name="Model 3"
+                        checked={modelFilters["Model 3"]}
+                        onChange={handleModelCheckChange}
+                      />
+                      <label htmlFor="Model 3">Model 3</label>
+                    </p>
+                    <p className={classes.opt}>Size</p>
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="Size 1"
+                        name="Size 1"
+                        checked={sizeFilters["Size 1"]}
+                        onChange={handleSizeCheckChange}
+                      />
+                      <label htmlFor="Size 1">Size 1</label>
+                    </p>
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="Size 2"
+                        name="Size 2"
+                        checked={sizeFilters["Size 2"]}
+                        onChange={handleSizeCheckChange}
+                      />
+                      <label htmlFor="Size 2">Size 2</label>
+                    </p>
+                    <p className={classes["checkbox-grp"]}>
+                      <input
+                        type="checkbox"
+                        id="Size 3"
+                        name="Size 3"
+                        checked={sizeFilters["Size 3"]}
+                        onChange={handleSizeCheckChange}
+                      />
+                      <label htmlFor="Size 3">Size 3</label>
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </section>
-          {selectedFilters.length>0 && (
-            <>
-              <ul className={classes["selected-filters"]}>
-                {selectedFilters.map((eachFilter)=>{
-                  return <li key={eachFilter.id} onClick={()=>handleRemoveFilter(eachFilter.id, eachFilter.event, eachFilter.setFn)}>
-                    <span>{eachFilter.label}</span>
-                    <WrongIcon/>
-                  </li>
+          <AnimatePresence>
+          {selectedFilters.length > 0 && (
+              <motion.ul initial={{y:-20, opacity:0}} animate={{y:0, opacity:1}} exit={{y:-20, opacity:0}} className={classes["selected-filters"]}>
+                {selectedFilters.map((eachFilter) => {
+                  return (
+                    <motion.li
+                      layout
+                      key={eachFilter.id}
+                      onClick={() =>
+                        handleRemoveFilter(
+                          eachFilter.id,
+                          eachFilter.event,
+                          eachFilter.setFn
+                        )
+                      }
+                    >
+                      <span>{eachFilter.label}</span>
+                      <WrongIcon />
+                    </motion.li>
+                  );
                 })}
-                <span onClick={handleClearAllFilters} className={classes.clear}>Clear All</span>
-              </ul>
-            </>
+                <motion.span
+                  layout
+                  onClick={handleClearAllFilters}
+                  className={classes.clear}
+                >
+                  Clear All
+                </motion.span>
+              </motion.ul>
           )}
+          </AnimatePresence>
         </div>
 
         <motion.ul
@@ -1049,7 +1515,7 @@ export default function ViewDesign() {
                   key={item.id}
                   className={classes.card}
                 >
-                  <img src={item.image} alt={item.title} />
+                  <img src={item.images[0].image} alt={item.title} />
                   <p className={classes.title}>{item.title}</p>
                   <p>{item.description}</p>
                 </motion.li>
@@ -1062,148 +1528,9 @@ export default function ViewDesign() {
   );
 
   if (isShow) {
+    
     content = (
-      <motion.div
-        key="details"
-        initial={{ y: -30, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: -30, opacity: 0 }}
-        className={classes["details-container"]}
-      >
-        <h1>{cardItem.title} Details</h1>
-        <div className={classes["card-details"]}>
-          <div className={classes.carousel}>
-            <ReactImageMagnify
-              {...{
-                smallImage: {
-                  alt: "Wristwatch by Ted Baker London",
-                  isFluidWidth: true,
-                  src: cardItem.image,
-                  width: 500,
-                  height: 500,
-                },
-                largeImage: {
-                  src: cardItem.image,
-                  width: 1200,
-                  height: 1800,
-                },
-                enlargedImageContainerDimensions: {
-                  width: "100%",
-                  height: "100%",
-                },
-              }}
-            />
-          </div>
-          {/* <div className={classes.carousel}> */}
-
-          {/* <Carousel autoplay>
-                        <img className={classes["carousel-img"]} src={cardItem.image}/>
-                        <img className={classes["carousel-img"]} src={cardItem.image1}/>
-                        <img className={classes["carousel-img"]} src={cardItem.image2}/>
-                        <img className={classes["carousel-img"]} src={cardItem.image3}/>
-                      </Carousel> */}
-          {/* <Carousel autoplay> */}
-          {/* <div className={classes['carousel-img']}><Magnify src={cardItem.image}/></div> */}
-          {/* <div className={classes['carousel-img']}><Magnify src={cardItem.image1}/></div>
-                      <div className={classes['carousel-img']}><Magnify src={cardItem.image2}/></div>
-                      <div className={classes['carousel-img']}><Magnify src={cardItem.image3}/></div>
-                      </Carousel> */}
-          {/* </div> */}
-          <section className={classes.content}>
-            <h2 className={classes.title}>{cardItem.title}</h2>
-            <p>{cardItem.description}</p>
-            <div className={classes["cardItem-details"]}>
-              <div>
-                <span>Design No.: </span>
-                <p>{cardItem.design_number}</p>
-              </div>
-              <div>
-                <span>Mian Group: </span>
-                <p>{cardItem.main_group}</p>
-              </div>
-              <div>
-                <span>Category: </span>
-                <p>{cardItem.category}</p>
-              </div>
-              <div>
-                <span>Created Date: </span>
-                <p>{cardItem.created_date}</p>
-              </div>
-              <div>
-                <span>Style: </span>
-                <p>{cardItem.style}</p>
-              </div>
-              <div>
-                <span>Product: </span>
-                <p>{cardItem.product}</p>
-              </div>
-              <div>
-                <span>Model: </span>
-                <p>{cardItem.model}</p>
-              </div>
-              <div>
-                <span>Size: </span>
-                <p>{cardItem.size}</p>
-              </div>
-              <div>
-                <span>Worker: </span>
-                <p>{cardItem.worker}</p>
-              </div>
-              <div>
-                <span>Pieces: </span>
-                <p>{cardItem.pieces}</p>
-              </div>
-              <div>
-                <span>Gross Weight: </span>
-                <p>{cardItem.gross_weight}</p>
-              </div>
-              <div>
-                <span>Stone Weight: </span>
-                <p>{cardItem.stone_weight}</p>
-              </div>
-              <div>
-                <span>Net Weight: </span>
-                <p>{cardItem.net_weight}</p>
-              </div>
-              <div>
-                <span>Component Weight: </span>
-                <p>{cardItem.component_weight}</p>
-              </div>
-              <div>
-                <span>Ghat Weight: </span>
-                <p>{cardItem.ghat_weight}</p>
-              </div>
-
-              {/* <p className={classes.price}>
-                <span>₹{cardItem.price} </span>
-              </p> */}
-            </div>
-            <div className={classes.actions}>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 500, mass: 1 }}
-              >
-                ADD TO CART
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 500, mass: 1 }}
-              >
-                BUY
-              </motion.button>
-            </div>
-          </section>
-        </div>
-        {/* <CarouselComponent /> */}
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          transition={{ type: "spring", stiffness: 500, mass: 1 }}
-          className={classes.back}
-          onClick={handleGoBack}
-        >
-          Back
-        </motion.button>
-      </motion.div>
+      <DesignDetails onGoBack={handleGoBack} cardItem={cardItem}/>
     );
   }
 

@@ -10,7 +10,8 @@
     background-color: #fcf2f3;
     width:82%;
     padding: 0rem;
-    padding-top: 3rem;
+    padding-top: 8vh;
+    height: 100vh;
     overflow-y: auto;
 }
 
