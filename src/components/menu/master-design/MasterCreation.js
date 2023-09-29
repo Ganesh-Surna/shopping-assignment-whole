@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import CreationTable from "./CreationTable";
 import classes from "./MasterCreation.module.css";
 // import SelectComponent from "./Select";
 // import InputComponent from "./Input";
 import useInput from "../../../hooks/use-input";
 import { useNavigate } from "react-router-dom";
+import { Drawer } from "antd";
+import axios from "axios";
 
 export default function MasterCreation() {
 
@@ -374,10 +376,13 @@ export default function MasterCreation() {
     navigate("/master-design");
   }
 
+  const [isDrawerOpen, setIsDrawerOpen]= useState(false);
+
   function handleAddImage(){
-    setImageUrl("https://picsum.photos/536/361");
-    setImageUrlTouch(true);
-    window.alert("Image added successfully!");
+    setIsDrawerOpen(true);
+  }
+  function handleCloseDrawer(){
+    setIsDrawerOpen(false);
   }
 
 
@@ -404,8 +409,29 @@ export default function MasterCreation() {
   const pieces1Classes= `${classes["num-group"]} ${pieces1HasErr ? classes["invalid"] : ""}`;
   const stone_weight1Classes= `${classes["num-group"]} ${stone_weight1HasErr ? classes["invalid"] : ""}`;
 
+  const [selectedFiles, setSelectedFiles]= useState(null);
+  const [msg, setMsg]= useState(null);
+
+  function handleSelectFiles(event){
+    setSelectedFiles(event.target.files);
+  }
+
+  function handleUploadFiles(){
+    if(!selectedFiles){
+      setMsg("No file Selected!");
+      return;
+    }
+
+    const fd = new FormData();
+    for(let i=0; i<selectedFiles.length; i++){
+      fd.append(`file${i+1}`, selectedFiles[i]);
+    }
+    
+  }
+
   return (
-    <main className={classes.container}>
+    <>
+      <main className={classes.container}>
       <header className={classes.header}>
         <p>Master Design Creation</p>
       </header>
@@ -912,5 +938,13 @@ export default function MasterCreation() {
       </div>
       </div>
     </main>
+    <Drawer title="Add Images" placement="right" open={isDrawerOpen} width={"50%"} closable={true} onClose={handleCloseDrawer}>
+      <div className={classes.drawer}>
+      <input type="file" multiple onChange={handleSelectFiles} />
+      <button onClick={handleUploadFiles}>Upload File</button>
+      {msg && <span>{msg}</span>}
+      </div>
+    </Drawer>
+    </>
   );
 }

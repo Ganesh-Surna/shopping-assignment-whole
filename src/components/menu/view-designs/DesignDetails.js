@@ -45,13 +45,18 @@ export default function DesignDetails({cardItem, onGoBack}){
                         alt: 'Wristwatch by Ted Baker London',
                         isFluidWidth: true,
                         src: defaultImageItem.image,
-                        // width:"100%",
-                        // height: "100",
+                        width:"100%",
+                        zIndex:0,
+                        height: "100%",
                     },
                     largeImage: {
                         src: defaultImageItem.image,
                         width: 1200,
                         height: 1800
+                    },
+                    enlargedImageContainerDimensions:{
+                        width:"100%",
+                        height:"100%"
                     }
           }} />
         </div>
