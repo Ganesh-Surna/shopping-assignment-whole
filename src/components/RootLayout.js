@@ -1,13 +1,11 @@
 import { Outlet } from "react-router-dom";
-import Below from "../UI/below-header";
-import MainNavigation from "./MainNavigation";
+import classes from "./RootLayout.module.css";
+import Sidebar from "./Sidebar";
 
 export default function RootLayout(){
  
-    return <>
-        <MainNavigation/>
-        <Below>
+    return <div className={classes.root}>
+            <Sidebar/>
             <Outlet/>
-        </Below>
-    </>
+    </div>
 }

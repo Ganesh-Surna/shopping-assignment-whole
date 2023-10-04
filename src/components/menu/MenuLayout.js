@@ -1,12 +1,10 @@
 import { Outlet } from "react-router-dom";
-import Field from "../../UI/field-container";
-import Sidebar from "../Sidebar";
+import classes from "./MenuLayout.module.css";
+import Header from "../Header";
 
 export default function MenuLayout(){
-    return <>
-        <Sidebar/>
-        <Field>
+    return<div className={classes.menu}>
+            <Header/>
             <Outlet/>
-        </Field>
-    </>
+    </div>
 }
